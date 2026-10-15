@@ -1,4 +1,4 @@
-Options -Indexes
+Options -Indexes +SymLinksIfOwnerMatch
 DirectoryIndex index.php
 
 <IfModule mod_rewrite.c>
