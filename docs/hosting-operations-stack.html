@@ -1,0 +1,332 @@
+<title>Hosting Operations Stack</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@500;700;900&family=Red+Hat+Text:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: research report — customer-journey strip, recommended stack summary, then one section per system category with an options table */
+:root{
+  --bg:#f4f6f9; --surface:#ffffff; --ink:#0f1d33; --muted:#566278; --line:#d9dfe8;
+  --brand:#0b5fae; --brand-soft:#e3eefa; --pick:#0f8a68; --pick-soft:#e1f4ee; --band:#0d2440; --band-fg:#e8eef7; --band-muted:#a9b8cc;
+  --display:"Red Hat Display", "Segoe UI", Arial, sans-serif;
+  --body:"Red Hat Text", "Segoe UI", system-ui, sans-serif;
+  --mono:"IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0c1320; --surface:#141d2d; --ink:#e6ecf5; --muted:#9dabc0; --line:#27334a;
+  --brand:#6fb1f2; --brand-soft:#16294a; --pick:#4fd1a8; --pick-soft:#11322a; --band:#08101c; --band-fg:#e6ecf5; --band-muted:#94a5bd; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0c1320; --surface:#141d2d; --ink:#e6ecf5; --muted:#9dabc0; --line:#27334a;
+  --brand:#6fb1f2; --brand-soft:#16294a; --pick:#4fd1a8; --pick-soft:#11322a; --band:#08101c; --band-fg:#e6ecf5; --band-muted:#94a5bd; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55;margin:0}
+.col{max-width:1180px;margin:0 auto;padding-inline:20px}
+h1,h2,h3{font-family:var(--display);line-height:1.15;text-wrap:balance;margin:0}
+h2{font-size:clamp(1.35rem,3vw,1.8rem);font-weight:900}
+h3{font-size:1.05rem;font-weight:700}
+p{margin:0}
+.eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--brand);margin-bottom:8px}
+.lede{color:var(--muted);max-width:76ch;margin-top:8px}
+.cover{background:var(--band);color:var(--band-fg);padding-block:46px 40px}
+.cover h1{font-size:clamp(1.9rem,4.6vw,3rem);font-weight:900;letter-spacing:-.02em;max-width:22ch}
+.cover p{color:var(--band-muted);max-width:70ch;margin-top:12px}
+.cover .meta{font-family:var(--mono);font-size:.74rem;margin-top:16px}
+
+.journey{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:8px;margin-top:26px}
+.journey div{border:1px solid #ffffff2b;border-radius:10px;padding:10px;min-width:0}
+.journey .n{font-family:var(--mono);font-size:.66rem;color:var(--pick)}
+.journey b{display:block;font-family:var(--display);font-size:.92rem;margin-top:2px}
+.journey small{display:block;color:var(--band-muted);font-size:.76rem;margin-top:3px;line-height:1.35}
+
+nav.rail{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+nav.rail .col{display:flex;gap:8px;overflow-x:auto;padding-block:10px}
+nav.rail a{font-family:var(--mono);font-size:.74rem;text-decoration:none;color:var(--ink);border:1px solid var(--line);background:var(--surface);padding:5px 10px;border-radius:999px;white-space:nowrap}
+nav.rail a:hover,nav.rail a:focus-visible{border-color:var(--brand);color:var(--brand);outline:none}
+
+section{padding-block:40px 4px;scroll-margin-top:60px}
+.tbl{margin-top:16px;overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:12px}
+table{border-collapse:collapse;width:100%;min-width:760px;font-size:.9rem}
+th,td{padding:10px 13px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+thead th{font-family:var(--mono);font-weight:500;font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);background:var(--surface)}
+tbody tr:last-child td{border-bottom:0}
+td:first-child{font-weight:600;white-space:nowrap}
+td.price{font-variant-numeric:tabular-nums;white-space:nowrap}
+tr.pick td{background:var(--pick-soft)}
+.badge{display:inline-block;font-family:var(--mono);font-size:.62rem;letter-spacing:.06em;text-transform:uppercase;background:var(--pick);color:var(--surface);padding:2px 6px;border-radius:4px;margin-left:6px;vertical-align:1px}
+.verdict{margin-top:12px;background:var(--surface);border-left:4px solid var(--pick);border-radius:0 10px 10px 0;padding:12px 16px;font-size:.93rem;max-width:100ch}
+.verdict b{color:var(--pick)}
+
+.stack{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:18px}
+.st{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;min-width:0}
+.st .k{font-family:var(--mono);font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.st b{display:block;font-family:var(--display);font-size:1.02rem;margin-top:3px}
+.st span{display:block;font-size:.86rem;color:var(--muted);margin-top:3px}
+.cost{margin-top:16px}
+.cost td:last-child{text-align:right}
+.cost tfoot td{font-weight:700;border-top:2px solid var(--ink);border-bottom:0}
+.who{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:16px}
+.who div{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.who p{color:var(--muted);font-size:.9rem;margin-top:4px}
+.phases{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:16px}
+.phases div{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px}
+.phases .k{font-family:var(--mono);font-size:.7rem;color:var(--brand)}
+.phases ul{margin:8px 0 0;padding-left:18px;font-size:.9rem;display:grid;gap:3px}
+.arch{display:grid;gap:8px;margin-top:20px}
+.layer{border-radius:12px;padding:12px 14px;display:grid;grid-template-columns:190px 1fr;gap:12px;align-items:center}
+.layer.build{background:var(--brand-soft)}
+.layer.buy{background:var(--surface);border:1px dashed var(--muted)}
+.lt{font-family:var(--mono);font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;color:var(--brand)}
+.layer.buy .lt{color:var(--muted)}
+.boxes{display:flex;flex-wrap:wrap;gap:6px;min-width:0}
+.boxes span{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:4px 9px;font-size:.84rem}
+.dec{display:inline-block;font-family:var(--mono);font-size:.66rem;letter-spacing:.06em;text-transform:uppercase;padding:2px 7px;border-radius:4px;white-space:nowrap}
+.dec.b{background:var(--brand-soft);color:var(--brand)}
+.dec.y{background:var(--pick-soft);color:var(--pick)}
+.dec.o{border:1px solid var(--muted);color:var(--muted)}
+@media (max-width:760px){.layer{grid-template-columns:1fr}}
+footer{margin-block:40px 56px;color:var(--muted);font-size:.84rem;max-width:100ch}
+footer a{color:var(--brand)}
+@media (max-width:980px){.journey{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media (max-width:760px){.stack,.phases,.who{grid-template-columns:1fr}.journey{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
+
+<header class="cover">
+  <div class="col">
+    <div class="eyebrow" style="color:var(--pick)">Research for b2cloud.io</div>
+    <h1>The software behind a hosting company</h1>
+    <p>Hosting companies run on a stack of connected systems: a website with domain search, a shopping cart, a billing and automation engine, a client dashboard, control panels that set up each service, and support tools such as tickets, live chat, a knowledge base and a status page. This page covers each system: the main options, 2026 pricing, what the market uses, and what fits b2cloud.io's five-country launch.</p>
+    <p class="meta">Compiled 13 Oct 2026 · Prices are USD list prices from vendor and comparison pages and change often</p>
+    <div class="journey" aria-label="Customer journey">
+      <div><span class="n">01</span><b>Find</b><small>Website, domain search, plan configurator</small></div>
+      <div><span class="n">02</span><b>Buy</b><small>Cart, checkout, tax, fraud check</small></div>
+      <div><span class="n">03</span><b>Pay</b><small>Cards, PayPal, direct debit, wallets</small></div>
+      <div><span class="n">04</span><b>Provision</b><small>Auto-setup of hosting, VPS, domain, email</small></div>
+      <div><span class="n">05</span><b>Manage</b><small>Client dashboard and control panels</small></div>
+      <div><span class="n">06</span><b>Get help</b><small>Chat, tickets, knowledge base, phone</small></div>
+      <div><span class="n">07</span><b>Stay informed</b><small>Status page, emails, alerts</small></div>
+      <div><span class="n">08</span><b>Renew</b><small>Invoices, auto-charge, dunning, upgrades</small></div>
+    </div>
+  </div>
+</header>
+
+<nav class="rail" aria-label="Sections"><div class="col" id="rail"></div></nav>
+
+<main class="col">
+  <section id="buildbuy">
+    <div class="eyebrow">b2cloud.io strategy · build by default, buy where needed</div>
+    <h2>Build vs buy plan</h2>
+    <p class="lede">Build everything the customer sees and the business logic that sets b2cloud.io apart. Buy only where you'd otherwise rebuild a mature product, need a licence or accreditation, or need regulated infrastructure such as payments and tax.</p>
+    <div class="arch" aria-label="Target architecture">
+      <div class="layer build"><span class="lt">Build · experiences</span><div class="boxes"><span>Website &amp; storefront</span><span>Domain search</span><span>Plan configurator &amp; cart</span><span>Client dashboard</span><span>Partner / reseller portal</span><span>Staff admin console</span><span>Mobile app (later)</span></div></div>
+      <div class="layer build"><span class="lt">Build · core platform</span><div class="boxes"><span>Accounts, teams &amp; SSO</span><span>Product catalogue &amp; pricing</span><span>Orders &amp; subscriptions</span><span>Invoicing, credits &amp; dunning</span><span>Tickets &amp; knowledge base</span><span>Live chat + AI assistant</span><span>Notifications</span><span>Status page</span><span>Reporting</span></div></div>
+      <div class="layer build"><span class="lt">Build · integration layer</span><div class="boxes"><span>Provisioning orchestrator with one adapter per supplier: panels, registrars, clouds, SaaS licences, Tective</span></div></div>
+      <div class="layer buy"><span class="lt">Buy · connect through APIs</span><div class="boxes"><span>Control panels</span><span>Server security &amp; backup</span><span>Registrars &amp; registries</span><span>Cloud / VPS partners</span><span>Payment gateways</span><span>Tax engine</span><span>Fraud screening</span><span>Email &amp; SMS delivery</span><span>Microsoft / Google / SSL resale</span></div></div>
+    </div>
+    <div class="tbl"><table>
+      <thead><tr><th>System</th><th>Decision</th><th>What to use</th><th>Why</th></tr></thead>
+      <tbody id="bb"></tbody>
+    </table></div>
+    <div class="phases">
+      <div><span class="k">MVP · ABOUT 6–9 MONTHS</span><h3>Sell and run the core</h3><ul><li>Storefront, domain search, cart and checkout</li><li>Accounts, catalogue, subscriptions, invoices</li><li>Stripe, PayPal and GoCardless payments; Stripe Tax</li><li>Adapters: DirectAdmin, Openprovider/PKNIC, one VPS partner</li><li>Client dashboard, tickets and knowledge base</li><li>Admin console for staff</li></ul></div>
+      <div><span class="k">V2 · NEXT 6 MONTHS</span><h3>Broaden and automate</h3><ul><li>Live chat with AI assistant</li><li>Microsoft CSP, Google Workspace and SSL adapters</li><li>Reseller / partner portal and white-label</li><li>Status page with uptime monitoring</li><li>Dunning, credit notes, multi-entity invoicing</li></ul></div>
+      <div><span class="k">V3 · YEAR 2</span><h3>Differentiate</h3><ul><li>Unified dashboard across hosting, cloud and Tective</li><li>Mobile app</li><li>Usage-based cloud billing</li><li>Public API for customers and partners</li><li>Consider your own hosting panel layer on top of DirectAdmin's API</li></ul></div>
+    </div>
+    <p class="verdict"><b>Main risk: billing.</b> Proration, upgrades and downgrades, failed-payment retries, credit notes and country-specific tax invoices for five entities are where home-built hosting platforms usually struggle. Build it on a double-entry ledger from day one, and let Stripe handle card storage, payment retries and tax calculation, so the PCI and tax burden stays with suppliers.</p>
+  </section>
+
+  <section id="recommend">
+    <div class="eyebrow">Reference · off-the-shelf alternative</div>
+    <h2>If you bought everything: a typical launch stack</h2>
+    <p class="lede">For comparison, this is what most mid-size global hosts run. It also works as a stopgap, or as a model for which features your own build needs to match.</p>
+    <div class="stack" id="stack"></div>
+    <div class="tbl cost"><table>
+      <thead><tr><th>Estimated software cost at launch</th><th>Basis</th><th>USD / month</th></tr></thead>
+      <tbody id="cost"></tbody>
+      <tfoot><tr><td>Estimated total</td><td>Excludes servers, domains, licences resold per customer, and staff</td><td>about $450–650</td></tr></tfoot>
+    </table></div>
+  </section>
+
+  <section id="market">
+    <div class="eyebrow">What the market uses</div>
+    <h2>Build your own or assemble a stack</h2>
+    <div class="who">
+      <div><h3>Large global hosts build their own</h3><p>Hostinger (hPanel), GoDaddy, Namecheap, SiteGround (Site Tools), Kinsta (MyKinsta) and IONOS run their own dashboards, carts and control panels. This takes years of engineering, and the polished experience is part of what they sell.</p></div>
+      <div><h3>Mid-size and regional hosts assemble one</h3><p>Most mid-size hosts, including the Pakistani competitors reviewed earlier, run WHMCS (or Blesta, HostBill or Upmind) with cPanel or DirectAdmin, a theme such as Lagom, and add-on chat and helpdesk tools. That stack is fast to launch and proven, but looks generic unless you theme it.</p></div>
+      <div><h3>The middle path</h3><p>Launch on a proven billing engine, then build a custom b2cloud.io storefront and dashboard on top of its API. Upmind and HostBill are built API-first; WHMCS has an API and is widely used headless.</p></div>
+      <div><h3>Pitfall: licence costs grow with you</h3><p>WHMCS and cPanel both raised prices for 2026 and charge by client or account count. Choose panels with your margins in mind: DirectAdmin or Enhance cost far less per account than cPanel.</p></div>
+    </div>
+    <div class="phases">
+      <div><span class="k">PHASE 1 · MONTHS 0–3</span><h3>Launch</h3><ul><li>WHMCS + Lagom theme and one-step order form</li><li>DirectAdmin or cPanel shared servers</li><li>Openprovider domains + local registries</li><li>Stripe, PayPal, GoCardless</li><li>Crisp chat + WHMCS tickets</li></ul></div>
+      <div><span class="k">PHASE 2 · MONTHS 3–12</span><h3>Scale support</h3><ul><li>Freshdesk or Zendesk with chat integrated</li><li>Status page + uptime monitoring</li><li>VirtFusion for VPS self-service</li><li>Microsoft CSP + Google reseller automation</li><li>Fraud screening + tax automation</li></ul></div>
+      <div><span class="k">PHASE 3 · YEAR 2+</span><h3>Own the experience</h3><ul><li>Custom storefront and dashboard on the billing API</li><li>Mobile app for account management</li><li>AI support assistant on the knowledge base</li><li>Partner and reseller portal</li><li>Re-evaluate billing (HostBill, Upmind or custom)</li></ul></div>
+    </div>
+  </section>
+
+  <div id="cats"></div>
+</main>
+
+<div class="col"><footer>
+  <p>Prices are vendor list prices or third-party aggregator figures from 2025–2026 and many changed in 2026. Several comparison sources are written by competing vendors. Confirm current pricing, licence terms and module compatibility with each vendor before committing.</p>
+  <p>Sources: <a href="https://support.cpanel.net/hc/en-us/articles/4402661289367-2026-WHMCS-Store-Pricing" target="_blank" rel="noopener">WHMCS 2026 pricing (cPanel store)</a> · <a href="https://whmcsglobalservices.com/whmcs-pricing-2026-breakdown-tier-comparison/" target="_blank" rel="noopener">WHMCS pricing 2026 breakdown</a> · <a href="https://satisfyhost.com/blog/10-best-whmcs-alternatives/" target="_blank" rel="noopener">WHMCS alternatives</a> · <a href="https://hostbillingpro.com/best-hosting-billing-software/" target="_blank" rel="noopener">Hosting billing software 2026</a> · <a href="https://adminbolt.com/blog/hosting-control-panel-pricing-compared/" target="_blank" rel="noopener">Control panel pricing</a> · <a href="https://www.hostmycode.com/blog/best-hosting-control-panels-2026-cpanel-plesk-directadmin-complete-comparison" target="_blank" rel="noopener">Control panels 2026</a> · <a href="https://www.costbench.com/software/live-chat/" target="_blank" rel="noopener">Live chat pricing 2026</a> · <a href="https://costbench.com/compare/freshdesk-vs-livechat/" target="_blank" rel="noopener">Freshdesk vs LiveChat</a> · <a href="https://www.openprovider.com/blog/domain-reseller-api" target="_blank" rel="noopener">Domain reseller APIs</a> · <a href="https://www.centralnicreseller.com/rest-api/" target="_blank" rel="noopener">CentralNic Reseller API</a> · <a href="https://www.logicweb.com/vps/" target="_blank" rel="noopener">VPS panels 2026</a> · <a href="https://lowendbox.com/blog/nostalgia-the-evolution-of-vps-control-panels-from-hypervm-to-solusvm-and-beyond/" target="_blank" rel="noopener">VPS panel history</a> · <a href="https://imunify360.com/pricing" target="_blank" rel="noopener">Imunify360 pricing</a> · <a href="https://pricingsaas.com/companies/cpanel" target="_blank" rel="noopener">cPanel ecosystem pricing</a> · <a href="https://www.modulesgarden.com/products/whmcs/lagom-one-step-order-form" target="_blank" rel="noopener">Lagom order form</a> · <a href="https://www.modulesgarden.com/products/whmcs/domain-orders-extended" target="_blank" rel="noopener">Domain Orders Extended</a> · <a href="https://onlineornot.com/status-page-tools" target="_blank" rel="noopener">Status page tools 2026</a></p>
+</footer></div>
+
+<script>
+const STACK = [
+ ["Billing & automation","WHMCS Professional","Cart, invoicing, provisioning, tickets, client area"],
+ ["Client portal & cart","Lagom theme + one-step order form","Branded dashboard, fast checkout, domain search"],
+ ["Shared hosting panel","DirectAdmin (cPanel as premium option)","Low per-account cost; cPanel for customers who ask for it"],
+ ["Server security","Imunify360 + CloudLinux + JetBackup","Malware, isolation, backups"],
+ ["VPS self-service","VirtFusion or partner API","Reinstall, reboot, console, snapshots"],
+ ["Domains","Openprovider or CentralNic Reseller","Plus local registries for .pk, .ae and others"],
+ ["Payments","Stripe + PayPal + GoCardless","Cards, wallets, Bacs, SEPA, PAD direct debit"],
+ ["Live chat","Crisp (or Tawk.to free at start)","Chat widget on site and in client area"],
+ ["Helpdesk & status","WHMCS tickets → Freshdesk; Instatus","Scale to a full helpdesk when the team grows"]
+];
+const COST = [
+ ["WHMCS Professional","Up to 500 clients","$55"],
+ ["Lagom theme + order form","One-time licences, spread over 12 months","~$20"],
+ ["DirectAdmin Standard × 2 servers","Unlimited accounts per server","$58"],
+ ["Imunify360 × 2 servers","Mid tier","$50–90"],
+ ["CloudLinux + JetBackup + Softaculous × 2","Per server","~$60"],
+ ["Openprovider membership","Wholesale domain pricing","~$4"],
+ ["Crisp Mini/Essentials","Chat for the team","$45–95"],
+ ["Helpdesk (3 agents)","Freshdesk Growth or similar, phase 2","$57"],
+ ["Status page + monitoring","Instatus Pro / Better Stack","$20–30"],
+ ["Fraud screening, transactional email, tax","Usage-based (MaxMind, Postmark, Stripe Tax)","$50–150"]
+];
+const CATS = [
+ {id:"billing",eyebrow:"Billing & automation",title:"Billing, cart & provisioning engines",lede:"The core system. It sells products, issues invoices, charges cards, sets up services through modules, suspends unpaid accounts, and runs the client area and often the ticket desk.",
+  head:["Platform","Model","Price (2026)","Strengths","Watch out for"],rows:[
+  ["WHMCS","Self-hosted, closed source","Plus $34.95/mo (250 clients) · Pro $54.95 (500) · Business 1000 $84.95 · up to $1,999.95 unlimited","Industry standard; 1,000+ modules for every panel, registrar and gateway; multi-currency and tax rules","Price rises each year; dated default UI; one company per install"],
+  ["Blesta","Self-hosted, source-available","About $13–24/mo or $350–1,495 one-time","Clean code, secure, lower cost, flat pricing","Smaller module ecosystem"],
+  ["HostBill","Self-hosted","$599–5,999 one-time, unlimited clients","Very deep automation, multi-brand, strong for cloud and VPS","Steeper learning curve"],
+  ["Upmind","Cloud SaaS","Free basic plan; premium from about $25/mo","Modern UI, multi-brand, API-first, built-in storefront","Younger ecosystem; data hosted by vendor"],
+  ["ClientExec","Self-hosted","Low monthly or owned licence","Simple, affordable","Small community"],
+  ["FOSSBilling","Open source","Free","No licence cost","Limited features; you maintain security"],
+  ["Paymenter","Open source (MIT)","Free","Popular with game and VPS sellers","Young project"]],
+  pick:0,verdict:"Start on <b>WHMCS</b> for its module coverage across five countries' registrars and gateways. Choose <b>Upmind</b> or <b>HostBill</b> instead if multi-brand support (b2cloud.io alongside partner brands) or a modern built-in storefront matters more than modules."},
+ {id:"portal",eyebrow:"Client dashboard, cart & domain search",title:"Client area themes, order forms & domain search",lede:"What customers see: the storefront, plan configurator, domain search with TLD suggestions, checkout, and the dashboard where they manage services, invoices and tickets.",
+  head:["Product","Type","Price","What it adds","Notes"],rows:[
+  ["Lagom (RS Studio / ModulesGarden)","WHMCS client theme","One-time licence + renewals","Modern dashboard, many layouts, dark mode, white-label","Most popular premium WHMCS theme"],
+  ["Lagom One-Step / Smart Order Form","WHMCS checkout","Licence (needs Lagom)","Single-page checkout, TLD spotlights in domain search, upsells","Higher conversion than the default cart"],
+  ["Domain Orders Extended (ModulesGarden)","WHMCS module","Licence","Bulk domain search and checkout","Supports WHMCS 8.12+"],
+  ["WHMCS built-in domain checker","Included","Free","Availability lookups through your registrar, suggestions, premium names","Basic but works out of the box"],
+  ["Upmind storefront","Included in Upmind","Included","Hosted storefront, cart and client area","No theme licence needed"],
+  ["Custom front-end (headless)","Your own build","Development cost","Your own UX on top of the billing API","Phase-3 option, as the large hosts do"]],
+  pick:1,verdict:"Use <b>Lagom + the one-step order form</b> at launch to get a modern global look quickly. Domain search uses WHMCS lookups through your registrar, with country TLDs (.co.uk, .ca, .cz, .ae, .pk) shown in spotlights for each market."},
+ {id:"panels",eyebrow:"Web hosting configuration",title:"Hosting control panels",lede:"Where customers manage websites, email, databases, DNS, SSL and one-click app installs. The panel licence is a large part of the cost of each shared hosting account.",
+  head:["Panel","Licensing","Price (2026)","Strengths","Watch out for"],rows:[
+  ["cPanel & WHM","Per server, tiered by account count","Solo about $27–30 · Admin about $33 (5 accts) · Pro about $47 (30) · Premier about $66 (100) + overage","Best-known panel; customers expect it; huge ecosystem","Most expensive per account; prices rise yearly"],
+  ["DirectAdmin","Per server","About $5 personal · $15 Lite · $29 Standard (unlimited accounts)","Lightweight, fast, far cheaper; WHMCS module","Less familiar to some customers"],
+  ["Plesk","Per server by domains","About $10–17 Web Admin · $30 Web Pro · $25–63 Web Host","Windows support, WordPress Toolkit, Docker","Price varies by reseller"],
+  ["Enhance","Per website, cluster-based","From about $0.15 per site at volume","Modern multi-server clustering, built for hosts","Newer; fewer integrations"],
+  ["CyberPanel","Free core, paid add-ons","Free; add-ons about $59/yr","OpenLiteSpeed performance, no licence","Tied to LiteSpeed; smaller support base"],
+  ["SPanel / HestiaCP / CloudPanel","Free or bundled","Free–low","Lightweight alternatives","Limited reseller features"]],
+  pick:1,verdict:"Use <b>DirectAdmin</b> (or <b>Enhance</b>) for standard shared and reseller plans to keep the planned prices profitable. Offer <b>cPanel</b> as a premium option and <b>Plesk</b> for Windows hosting."},
+ {id:"server-addons",eyebrow:"Server add-ons",title:"Security, backup & app installers",lede:"Per-server licences that most hosts layer on top of the control panel.",
+  head:["Product","Purpose","Price (2026)","Notes"],rows:[
+  ["Imunify360","Malware scanning, WAF, proactive defence","About $12–45/server/mo by tier","Prices rising Dec 2026 per reports"],
+  ["ImunifyAV+","Malware scan and cleanup","From about $7/server/mo","Tiered by user count from Oct 2026"],
+  ["CloudLinux OS","Account isolation and resource limits (LVE)","About $17/server/mo","Stops one site from slowing a server"],
+  ["JetBackup","Incremental backups, self-service restore","About $9/server/mo","Restore buttons inside cPanel/DirectAdmin"],
+  ["Softaculous / Installatron","One-click WordPress and 400+ apps","About $3/server/mo","Plesk includes WP Toolkit"],
+  ["LiteSpeed Web Server","Faster web server with LSCache","Per server, by RAM tier","Needed for the speed claims in plans"],
+  ["Tective","Your own backup and protection","Internal","Possible bundle or upsell across hosting"]]},
+ {id:"vps",eyebrow:"VPS & cloud self-service",title:"VPS provisioning panels",lede:"Let customers reboot, reinstall, open a console, take snapshots and view usage for VPS and cloud servers, with the billing system creating servers automatically.",
+  head:["Panel","Model","Strengths","Watch out for"],rows:[
+  ["VirtFusion","Licensed, KVM","Modern UI, actively developed, WHMCS and Blesta modules","Costs more than Virtualizor/SolusVM"],
+  ["SolusVM 2","Licensed (Plesk/WebPros)","Long track record, stable","Moving off v1 is hard"],
+  ["Virtualizor","Licensed, low cost","Many virtualisation types, cheap","Mixed reviews on stability"],
+  ["Proxmox VE","Free (paid support optional)","Robust hypervisor","Needs a WHMCS module or third-party panel for customers"],
+  ["Partner APIs (white-label)","Through the partner","DigitalOcean, Vultr, Hetzner or OVH APIs through WHMCS modules","Fits your white-label model with no hardware to run"]],
+  pick:4,verdict:"Because IaaS is <b>white-labelled</b>, start with <b>partner APIs</b> resold through WHMCS modules. Add <b>VirtFusion</b> when you run your own hardware in a region."},
+ {id:"domains",eyebrow:"Domain registration",title:"Domain reseller platforms & registries",lede:"The registrar connection behind domain search, registration, transfers and DNS. To sell every target country's TLDs you need a wholesale platform plus some direct registry relationships.",
+  head:["Platform","TLDs","Entry cost","Strengths","Notes"],rows:[
+  ["Openprovider","2,000+","Membership from $49/yr","Wholesale pricing at cost, REST API, WHMCS module","Strong for EU, including .cz"],
+  ["CentralNic Reseller (RRPproxy)","1,200+","Account-based","Many ccTLDs, REST/EPP APIs, sandbox","Good ccTLD coverage"],
+  ["OpenSRS (Tucows)","Large","Account-based","Long-established; also SSL and email","Popular in Canada (Tucows is Canadian)"],
+  ["ResellerClub / LogicBoxes","Large","Free to join","Popular in South Asia; hosting and SSL too","Ready-made storefront option"],
+  ["Enom","550+","Account-based","WHMCS, cPanel and Plesk modules","Markup at every tier"],
+  ["PKNIC (.pk)","Pakistan","Registrar account","Required for .pk resale","Prepaid cards and registry account"],
+  [".ae (AEDA), .uk (Nominet), .ca (CIRA), .cz (CZ.NIC)","Country TLDs","Via accredited partners","Most can be sold through Openprovider or CentralNic","Check each registry's local-presence rules"]],
+  pick:0,verdict:"Use <b>Openprovider</b> or <b>CentralNic Reseller</b> as the main wholesale registrar, with a <b>PKNIC</b> account for .pk. Check that .ae is available through your chosen partner; it may need a UAE-accredited registrar."},
+ {id:"helpdesk",eyebrow:"Support ticketing",title:"Helpdesk & ticketing systems",lede:"Email, web form and portal tickets with departments, SLAs, macros and a knowledge base.",
+  head:["Tool","Price (2026)","Strengths","Watch out for"],rows:[
+  ["WHMCS Support Tickets","Included","Linked to client, services and invoices; departments; KB","Basic reporting and automation"],
+  ["Freshdesk","Free · Growth $19 · Pro $55 · Enterprise $89 per agent/mo","Good value, SLAs, automations, built-in chat (Freshchat)","Needs a WHMCS integration for service context"],
+  ["Zendesk","From about $19/agent/mo","Enterprise-grade, omnichannel, AI agents","Costs climb with add-ons"],
+  ["Help Scout","About $22/user/mo","Simple shared inbox, good KB","Lighter on SLAs"],
+  ["LiveAgent","From $15/agent/mo","Tickets, chat and phone in one tool","Dated UI"],
+  ["Zammad / osTicket","Free, self-hosted","No licence cost","You maintain it"]],
+  pick:1,verdict:"Launch on <b>WHMCS tickets</b>, which already link to each client's services. Move to <b>Freshdesk</b> once support runs across five countries' time zones and needs SLAs and reporting."},
+ {id:"chat",eyebrow:"Live chat",title:"Online chat support",lede:"Pre-sales chat on the website and support chat inside the client area, increasingly with an AI assistant answering first.",
+  head:["Tool","Price (2026)","Strengths","Watch out for"],rows:[
+  ["Crisp","Free · Mini $45 · Essentials $95 /mo (workspace)","Flat team pricing, shared inbox, KB, chatbot, WHMCS plugin","AI features on higher tiers"],
+  ["Tawk.to","Free; $29/mo to remove branding","Zero cost, widely used by hosts","Basic; branding on free tier"],
+  ["Intercom","From $29/seat + about $0.99 per AI resolution","Best-in-class AI agent (Fin)","Expensive at scale"],
+  ["LiveChat","$20–59/agent/mo","Polished, many integrations","Per-agent cost"],
+  ["Zendesk Messaging","Bundled with Zendesk","One system with tickets","Top tier rose to $169 in Feb 2026"],
+  ["Chatwoot","Open source or about $19/agent cloud","Self-hostable omnichannel inbox","Needs setup"],
+  ["Tidio","From about $29/mo","AI bot (Lyro), simple setup","Small-business focus"]],
+  pick:0,verdict:"<b>Crisp</b> offers flat pricing for a team spread across five offices, with a WHMCS plugin that shows the client's services in chat. Add an AI assistant trained on your knowledge base to answer common questions around the clock."},
+ {id:"comms",eyebrow:"Other client-facing systems",title:"Status, knowledge base, phone & notifications",lede:"Systems that cut ticket volume and build trust.",
+  head:["Need","Options","Price (2026)","Recommendation"],rows:[
+  ["Status page","Instatus · Better Stack · Atlassian Statuspage · Uptime Kuma (free)","Instatus Pro about $15–20/mo; Statuspage $29–1,499/mo","Instatus or Better Stack"],
+  ["Uptime monitoring","Better Stack · UptimeRobot · Uptime Kuma","Free–$30/mo","Better Stack (monitoring + status + on-call)"],
+  ["Knowledge base","WHMCS KB · Crisp KB · Freshdesk KB · Document360","Included–$$","Use the KB built into your helpdesk"],
+  ["Phone / call centre","Aircall · 3CX · Twilio Flex","About $30–70/user/mo","Local numbers in UAE, UK, Canada, Czech Republic and Pakistan"],
+  ["Transactional email","Postmark · Amazon SES · Mailgun","Usage-based","Postmark for reliable invoice and alert delivery"],
+  ["SMS / WhatsApp alerts","Twilio · WhatsApp Business API","Usage-based","WhatsApp is popular in UAE and Pakistan"]]},
+ {id:"payments",eyebrow:"Payments, tax & fraud",title:"Payment, tax & fraud systems",lede:"Gateways connected to billing for automatic renewals, plus tax calculation and order screening.",
+  head:["Need","Options","Notes"],rows:[
+  ["Cards & wallets","Stripe · Checkout.com · Adyen","Stripe supports UAE, UK, Canada and Czech entities; Pakistan entities appear not to be supported"],
+  ["PayPal","PayPal Business","Billing agreements for auto-renewal"],
+  ["Direct debit","GoCardless","Bacs (UK), SEPA (EU/CZ), PAD (Canada) in one integration"],
+  ["Pakistan collections","JazzCash · Easypaisa · Raast · local gateway","Through the Pakistan entity"],
+  ["Tax","WHMCS tax rules · Stripe Tax · Quaderno","VAT/GST by country, EU OSS, reverse charge"],
+  ["Fraud screening","MaxMind minFraud · FraudLabs Pro","Hosting attracts card fraud; screen every order"],
+  ["Accounting","Xero · QuickBooks · Zoho Books","Sync invoices per entity"]]},
+ {id:"licensing",eyebrow:"Resold software",title:"Licence & SaaS resale channels",lede:"Where hosts source the third-party products they sell under their own name.",
+  head:["Product","Channel","Notes"],rows:[
+  ["Microsoft 365","Microsoft CSP through an indirect provider (Pax8, TD Synnex, Ingram)","WHMCS modules automate seat changes"],
+  ["Google Workspace","Google Workspace reseller programme","Reseller console + API"],
+  ["SSL certificates","GoGetSSL · TheSSLStore · Sectigo partner","WHMCS modules for automatic issuance"],
+  ["Email platform","Titan · OX App Suite · own mail servers","Titan is popular with hosts for bundled mailboxes"],
+  ["cPanel / Plesk / CloudLinux licences","Partner NOC or licence resellers","Partner pricing is cheaper than direct"],
+  ["Site builder","SitePad · Weblium · Zyro-style builders","Common upsell on shared hosting"]]}
+];
+
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]));
+const BB = [
+ ["Website, storefront & plan configurator","b","Your own front end","Brand and conversion are your differentiators"],
+ ["Domain search","b","Own UI + registrar availability APIs","UI is simple; the data comes from Openprovider/CentralNic and PKNIC"],
+ ["Cart & checkout","b","Own build + Stripe Elements / PayPal / GoCardless","Stripe's hosted fields keep card data out of your systems (lighter PCI scope)"],
+ ["Client dashboard","b","Own build","One place for hosting, domains, cloud, email and Tective"],
+ ["Accounts, catalogue, subscriptions, invoicing","b","Own build on a ledger","Core business logic and multi-entity billing for five countries"],
+ ["Card storage, retries, payouts","y","Stripe · PayPal · GoCardless · JazzCash/Easypaisa","Regulated; can't be built"],
+ ["Tax calculation","y","Stripe Tax or Quaderno","VAT, GST, OSS and reverse-charge rules change constantly"],
+ ["Fraud screening","y","MaxMind minFraud or FraudLabs Pro","Needs global fraud data you can't collect yourself"],
+ ["Provisioning orchestrator","b","Own build, one adapter per supplier","Your automation engine and long-term asset"],
+ ["Hosting control panel","y","DirectAdmin (cPanel/Plesk optional)","Rebuilding a panel takes years; integrate through its API"],
+ ["Server security & backups","y","Imunify360 · CloudLinux · JetBackup","Licensed kernel and security tech; Tective can cover off-site backup"],
+ ["VPS / cloud infrastructure","y","Partner APIs (white-label), later VirtFusion or Proxmox","Fits the white-label model"],
+ ["Domain registration","y","Openprovider / CentralNic + PKNIC","Needs registrar accreditation"],
+ ["Microsoft 365, Google Workspace, SSL","y","CSP distributor · Google reseller · GoGetSSL/Sectigo","Vendor partner programmes"],
+ ["Tickets & knowledge base","b","Own build inside the dashboard","Tickets already linked to the client's services and invoices"],
+ ["Live chat","o","Own build, or self-hosted Chatwoot (open source)","Realtime chat with apps and AI is a larger build; Chatwoot is free to own and customise"],
+ ["AI support assistant","b","Own build on an LLM API + your knowledge base","Answers questions using the customer's own account context"],
+ ["Status page","b","Own page + Uptime Kuma or Better Stack monitoring","The page is simple; the monitoring probes run from several regions"],
+ ["Email, SMS & WhatsApp delivery","y","Postmark / Amazon SES · Twilio · WhatsApp Business API","Delivery reputation and carrier access"],
+ ["Telephony","y","Aircall / 3CX / Twilio","Local numbers in each of the five countries"],
+ ["Reseller / partner portal","b","Own build","White-labelling is part of your offer"],
+ ["Accounting","y","Xero / QuickBooks via API","Per-entity books; sync invoices from your platform"]
+];
+const DEC = {b:["Build","b"],y:["Buy","y"],o:["Build or open source","o"]};
+document.getElementById("bb").innerHTML = BB.map(r=>`<tr><td>${esc(r[0])}</td><td><span class="dec ${DEC[r[1]][1]}">${DEC[r[1]][0]}</span></td><td>${esc(r[2])}</td><td>${esc(r[3])}</td></tr>`).join("");
+document.getElementById("stack").innerHTML = STACK.map(s=>`<div class="st"><span class="k">${esc(s[0])}</span><b>${esc(s[1])}</b><span>${esc(s[2])}</span></div>`).join("");
+document.getElementById("cost").innerHTML = COST.map(c=>`<tr><td>${esc(c[0])}</td><td>${esc(c[1])}</td><td class="price">${esc(c[2])}</td></tr>`).join("");
+const rail = document.getElementById("rail");
+[["buildbuy","Build vs buy"],["recommend","Off-the-shelf stack"],["market","What the market uses"]].concat(CATS.map(c=>[c.id,c.eyebrow])).forEach(([id,t])=>{const a=document.createElement("a");a.href="#"+id;a.textContent=t;rail.appendChild(a);});
+document.getElementById("cats").innerHTML = CATS.map(c=>`<section id="${c.id}"><div class="eyebrow">${esc(c.eyebrow)}</div><h2>${esc(c.title)}</h2><p class="lede">${esc(c.lede)}</p>
+<div class="tbl"><table><thead><tr>${c.head.map(h=>`<th>${esc(h)}</th>`).join("")}</tr></thead><tbody>${c.rows.map((r,i)=>`<tr class="${c.pick===i?"pick":""}">${r.map((x,j)=>`<td class="${j===2&&/\$|Free|Included/.test(x)?"price":""}">${esc(x)}${j===0&&c.pick===i?'<span class="badge">Pick</span>':""}</td>`).join("")}</tr>`).join("")}</tbody></table></div>
+${c.verdict?`<p class="verdict">${c.verdict}</p>`:""}</section>`).join("");
+</script>

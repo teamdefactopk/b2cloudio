@@ -1,0 +1,255 @@
+<title>Hosting &amp; Cloud Provider Landscape</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: report header, sticky category rail, then one section per list; each provider is a row of four labelled fields that stacks on phones */
+:root{
+  --bg:#f5f7fb; --surface:#ffffff; --fg:#141a2b; --muted:#56607a; --line:#dde2ee;
+  --accent:#2346c9; --accent-soft:#e6ebfb; --you:#b2570f; --you-soft:#fbeee2; --warn:#8a6100; --warn-soft:#fbf3dc;
+  --display:"Archivo", "Helvetica Neue", Arial, sans-serif;
+  --body:"Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  --mono:"JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f1320; --surface:#171c2c; --fg:#e7eaf3; --muted:#9aa3bb; --line:#2a3148;
+  --accent:#8ea6ff; --accent-soft:#1f2a4f; --you:#f0a35e; --you-soft:#3a2614; --warn:#e8c25a; --warn-soft:#3a3016; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1320; --surface:#171c2c; --fg:#e7eaf3; --muted:#9aa3bb; --line:#2a3148;
+  --accent:#8ea6ff; --accent-soft:#1f2a4f; --you:#f0a35e; --you-soft:#3a2614; --warn:#e8c25a; --warn-soft:#3a3016; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.5;margin:0}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:20px;padding-block:32px 64px}
+header h1{font-family:var(--display);font-weight:800;font-size:clamp(1.8rem,4vw,2.6rem);letter-spacing:-.01em;margin:0 0 8px;text-wrap:balance}
+header p{color:var(--muted);max-width:70ch;margin:0 0 6px}
+.meta{font-family:var(--mono);font-size:.78rem;color:var(--muted);letter-spacing:.02em}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line);margin-top:24px;padding-block:10px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+nav a{font-family:var(--mono);font-size:.76rem;text-decoration:none;color:var(--fg);border:1px solid var(--line);background:var(--surface);padding:5px 10px;border-radius:999px;white-space:nowrap}
+nav a:hover,nav a:focus-visible{border-color:var(--accent);color:var(--accent);outline:none}
+.filter{flex:1 1 220px;min-width:0;display:flex}
+.filter input{width:100%;font:inherit;font-size:.9rem;padding:6px 10px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--fg)}
+.filter input:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+section{margin-top:44px;scroll-margin-top:120px}
+section>h2{font-family:var(--display);font-weight:700;font-size:1.45rem;margin:0 0 4px;text-wrap:balance}
+.intro{color:var(--muted);max-width:80ch;margin:0 0 16px}
+.prov{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin-top:10px;display:grid;grid-template-columns:200px 1fr;gap:16px}
+.prov.you{border-color:var(--you);background:linear-gradient(var(--you-soft),var(--you-soft)) top/100% 4px no-repeat,var(--surface)}
+.who{min-width:0}
+.rank{font-family:var(--mono);font-size:.75rem;color:var(--muted)}
+.name{font-family:var(--display);font-weight:700;font-size:1.08rem;line-height:1.25;margin:2px 0 6px}
+.tag{display:inline-block;font-family:var(--mono);font-size:.68rem;letter-spacing:.04em;text-transform:uppercase;padding:2px 7px;border-radius:4px;background:var(--accent-soft);color:var(--accent);margin:0 4px 4px 0}
+.tag.you{background:var(--you-soft);color:var(--you)}
+.tag.low{background:var(--warn-soft);color:var(--warn)}
+.fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 22px;min-width:0}
+.f h4{font-family:var(--mono);font-size:.7rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 3px}
+.f p{margin:0;font-size:.93rem}
+.note{grid-column:1/-1;font-size:.85rem;color:var(--warn);background:var(--warn-soft);padding:6px 10px;border-radius:6px}
+.take{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px 22px}
+.take ol{margin:6px 0 0;padding-left:20px;display:grid;gap:8px}
+.take li{max-width:95ch}
+.take b{font-weight:600}
+.empty{color:var(--muted);font-style:italic}
+footer{margin-top:48px;color:var(--muted);font-size:.85rem;max-width:90ch}
+footer a{color:var(--accent)}
+@media (max-width:760px){.prov{grid-template-columns:1fr;gap:10px}.fields{grid-template-columns:1fr}}
+</style>
+
+<div class="wrap">
+<header>
+  <h1>Hosting &amp; Cloud Provider Landscape</h1>
+  <p>What the top providers in each category sell, which solutions they target, what content they publish, and which online systems their customers use: portals, control panels, consoles, apps, APIs and payment options. Pakistani competitors creativeON and SoftHof are highlighted.</p>
+  <p class="meta">Compiled 13 Oct 2026 · Rankings indicate scale and reputation, not audited market share</p>
+</header>
+
+<nav id="nav" aria-label="Categories">
+  <div class="filter"><input id="q" type="search" placeholder="Filter providers, e.g. cPanel, JazzCash, Kubernetes" aria-label="Filter providers"></div>
+</nav>
+
+<main id="main"></main>
+
+<footer>
+  <p><b>How to read this.</b> For global providers, products and online systems come from their public product lines as of 2026. For Pakistani providers, details come from provider pages, directories (WHTop, WebsitePlanet), Trustpilot and comparison blogs. Many of those blogs are written by competitors, and fields marked "Low confidence" could not be confirmed. Several Pakistani hosts don't publish what software runs their client area, so it is described generically. Check the vendor before relying on any single detail.</p>
+  <p>Key sources: <a href="https://creativeon.com/" target="_blank" rel="noopener">creativeON</a>, <a href="https://www.whtop.com/review/creativeon.com" target="_blank" rel="noopener">WHTop creativeON review</a>, <a href="https://cloud.google.com/find-a-partner/partner/creativeon-hosting-private-limited" target="_blank" rel="noopener">Google Cloud partner listing</a>, <a href="https://softhof.com/" target="_blank" rel="noopener">SoftHof</a>, <a href="https://softhof.com/business-hosting/" target="_blank" rel="noopener">SoftHof business hosting</a>, <a href="https://www.trustpilot.com/review/softhof.com" target="_blank" rel="noopener">SoftHof on Trustpilot</a>, <a href="https://middlehost.com/en-PK/why-middlehost/" target="_blank" rel="noopener">Middlehost</a>, <a href="https://websiteplanet.com/web-hosting/sky-host" target="_blank" rel="noopener">SkyHost review</a>, <a href="https://www.navicosoft.pk/web-hosting-in-pakistan/" target="_blank" rel="noopener">Navicosoft</a>, <a href="https://dakaan.pk/blog/web-hosting-services-in-pakistan" target="_blank" rel="noopener">Dakaan payments roundup</a>, <a href="https://nayatel.com/blog/self-service-cloud-pakistan" target="_blank" rel="noopener">Nayatel Cloud</a>, <a href="https://ptcl.com.pk/Home/PageDetail?ItemId=434&amp;linkId=1004" target="_blank" rel="noopener">PTCL Smart Cloud</a>, <a href="https://garajcloud.com/faqs" target="_blank" rel="noopener">Garaj Cloud FAQ</a>, <a href="https://www.pknic.net.pk/how-to-pay.html" target="_blank" rel="noopener">PKNIC how to pay</a>, <a href="https://datavault.com.pk/top-10-cloud-service-providers-in-pakistan/" target="_blank" rel="noopener">DataVault</a>, <a href="https://www.articsledge.com/post/cloud-market-share" target="_blank" rel="noopener">cloud market share Q2 2026</a>, <a href="https://domainnamewire.com/2026/04/02/2025s-biggest-com-gainers-namecheap-hostinger-cloudflare/" target="_blank" rel="noopener">DomainNameWire</a>.</p>
+</footer>
+</div>
+
+<script>
+const C = [
+{id:"take",title:"Takeaways for b2cloudio",take:true},
+{id:"pk-hosting",title:"Web hosting providers in Pakistan",intro:"Local hosts serving SMEs and agencies. Nearly all sell cPanel-based shared hosting, domains and SSL, and take local wallet payments.",items:[
+ {name:"WebSouls",tags:["20+ yrs"],products:"Shared cPanel hosting, WordPress hosting, reseller hosting, VPS, dedicated and cloud servers, .pk and gTLD domains, SSL, business email.",solutions:"SME and corporate websites, e-commerce stores, agencies reselling hosting.",content:"Active SEO blog, including a \"Top 10 hosting companies in Pakistan\" listicle that ranks itself first. Product landing pages and a help/knowledge base.",systems:"Online client area for ordering, invoices, renewals and support tickets. cPanel for site management. Payment by JazzCash, Easypaisa, bank transfer and cards (per third-party roundups)."},
+ {name:"HosterPK",tags:[],products:"Shared, WordPress, VPS, cloud and dedicated hosting; domains; SSL.",solutions:"Budget-conscious SMEs and freelancers.",content:"Separate blog (blog.hosterpk.com) with buying guides such as \"Best domain registrar in Pakistan\".",systems:"Client area for billing and tickets. Sources disagree on the panel: cPanel versus DirectAdmin. Local wallet payments. WHTop user rating 5.4/10 from 155 reviews.",note:"Control panel unconfirmed; ask the vendor."},
+ {name:"creativeON",you:true,tags:["Since 2001","PKNIC Gold Partner","Google partner"],products:"Shared, managed WordPress (LiteSpeed + LSCache, auto-updates), WooCommerce, business and cloud hosting; reseller hosting; VPS (directory listings: about PKR 1,405–12,000/mo); dedicated servers; Pakistan-based servers; .pk/.com.pk/.org.pk plus 100+ TLDs; PKNIC scratch cards; SSL; Google Workspace resale; web development.",solutions:"Businesses in Pakistan and the UAE; local data residency via servers in Lahore; Google Workspace migration and onboarding (Google Cloud partner listing).",content:"Blog with WordPress education (\"What is WordPress\", \"Ultimate guide to WordPress hosting in Pakistan & UAE\"). Dedicated landing pages for Pakistan-based servers, .pk domains and Google Workspace pricing in PKR.",systems:"Online client portal for orders, billing, domain management and tickets. cPanel hosting control panel. Online ordering of PKNIC cards. 100-day money-back guarantee. WHTop rating 7.6/10 (18 ratings).",note:"Client-area software isn't stated publicly. Google Workspace trial length conflicts across its own pages (14 vs 30 days)."},
+ {name:"HostBreak",tags:["Budget"],products:"Low-cost shared hosting (reported from about PKR 400), VPS, dedicated servers, domains.",solutions:"Price-sensitive startups, students, small sites.",content:"Pricing-led product pages; limited editorial content.",systems:"Client area plus cPanel. Accepts JazzCash/Easypaisa (third-party roundups).",note:"Prices vary widely across sources."},
+ {name:"Navicosoft",tags:["Since 2002"],products:"Shared, reseller, VPS and dedicated hosting; domains; SSL; plus digital marketing, SEO and software development.",solutions:"Agencies and growing businesses that want hosting and marketing from one vendor.",content:"Large \"articles\" library on navicosoft.com, including best-hosting-in-Pakistan guides; separate .pk site.",systems:"Client area, cPanel, free SSL, DDoS protection. Payments: Easypaisa, JazzCash, PayPal, Skrill and crypto."},
+ {name:"SoftHof",you:true,tags:["Since 2006","Lahore"],products:"Shared hosting (Linux cPanel), business hosting (5 to 150 email accounts per plan), reseller hosting (cPanel), VPS, Windows and Linux servers, .pk domains, PKNIC prepaid cards, web design and development, e-commerce, SEO and digital marketing, business email.",solutions:"Lahore and Pakistan SMEs that want one vendor for hosting plus website build and marketing.",content:"Product pages targeting \"web hosting in Lahore\", \"cheap web hosting in Pakistan\", \"reseller hosting in Pakistan\". Little editorial or blog content found.",systems:"cPanel for hosting and email, with SSD storage, free SSL, DDoS protection and backups. Trustpilot reviews are positive but few.",note:"No public client-area URL found. Ordering and support appear to go through sales and phone contact."},
+ {name:"Middlehost",tags:["Aggressive SEO"],products:"cPanel hosting on LiteSpeed/NVMe/Redis, cloud hosting, NVMe VPS with root access, dedicated servers (marked \"coming soon\"), web development services.",solutions:"Pakistani businesses wanting a performance stack and Urdu/English support.",content:"The heaviest content marketing in the market: comparison pages (Middlehost vs Hostinger), city pages (Karachi), data-centre location pages, a 2026 \"best hosting\" guide, and an llms.txt file aimed at AI search engines.",systems:"Client area, cPanel, daily backups, free migration, 99.9% SLA, 30-day refund. Payments: JazzCash, EasyPaisa, NayaPay, bank transfer, cards, PayPal."},
+ {name:"ServerSea",tags:[],products:"Shared hosting, VPS, dedicated servers.",solutions:"SMEs.",content:"No notable public content found.",systems:"Client area plus control panel (not confirmed).",note:"Little public information; low confidence."},
+ {name:"SkyHost",tags:[],products:"Shared, WordPress, reseller and VPS hosting; free domain on some plans; storage from 1 GB to 100 TB.",solutions:"Small sites wanting unlimited bandwidth.",content:"Plan pages only.",systems:"Client area, cPanel, weekly or monthly automatic backups on some plans, 99.99% uptime claim.",note:"One review says its servers are in the US and Germany, contradicting lists that call it Pakistan-hosted."},
+ {name:"Nayatel",tags:["ISP","Self-service cloud"],products:"Virtual servers, cloud storage, hosting, colocation, plus fibre internet.",solutions:"Enterprises and government needing local hosting and PKR billing.",content:"Blog posts promoting \"Pakistan's first self-service cloud\".",systems:"Self-service portal (cloud.nayatel.com): pay-as-you-go provisioning and PKR payments."}
+]},
+{id:"pk-corp",title:"Corporate hosting & data centres in Pakistan",intro:"Telecom-backed operators selling to enterprises, banks and government. They compete on data residency, connectivity and SLAs rather than on price.",items:[
+ {name:"PTCL Smart Cloud",tags:["Telco"],products:"Virtual Data Centre (VMware), VPS, disaster recovery, backup, storage, colocation; hybrid cloud with IBM and AWS.",solutions:"Enterprise IaaS, DR sites, government and banking workloads.",content:"Corporate product pages; little editorial content.",systems:"VDC web portal for creating and deleting vApps, networks and storage. 24/7 support with a 99.5% uptime guarantee.",note:"Some PTCL pages are several years old; confirm current specs."},
+ {name:"Nayatel Cloud",tags:["Self-service"],products:"Virtual servers, cloud storage, hosting, Tier-grade data centre, colocation.",solutions:"Enterprises in Islamabad and Rawalpindi and nationwide; local data residency.",content:"Blog plus product pages.",systems:"cloud.nayatel.com self-service portal, pay-as-you-go, PKR billing."},
+ {name:"Jazz Garaj Cloud",tags:["Telco"],products:"Virtual Data Centre (self-managed), managed VPS, object storage, backup, Microsoft 365 backup, DR-as-a-service.",solutions:"Enterprise and public-sector cloud with local residency.",content:"FAQs and solution pages on garajcloud.com and jazz.com.pk.",systems:"Single-window self-service platform for onboarding, subscription, billing, invoicing and managed services."},
+ {name:"Cybernet (StormFiber)",tags:["ISP"],products:"Data-centre hosting, colocation, cloud, web hosting, enterprise connectivity.",solutions:"SMEs and large corporates bundling hosting with connectivity.",content:"Corporate solution pages.",systems:"Account-managed onboarding; customer support portal."},
+ {name:"Multinet",tags:[],products:"Own data centre, colocation, IaaS, managed disaster recovery, connectivity.",solutions:"Outsourced data-centre and DR operations.",content:"Corporate solution pages.",systems:"Account-managed; NOC support."},
+ {name:"Transworld (TWA)",tags:["Submarine cable"],products:"Colocation, international bandwidth, carrier services.",solutions:"Carriers, ISPs and enterprises needing international links next to their racks.",content:"Corporate pages.",systems:"Account-managed carrier services."},
+ {name:"Zong (CMPak)",tags:["Telco"],products:"Data centre, colocation, cloud, enterprise connectivity.",solutions:"Enterprise bundles with mobile and connectivity.",content:"Corporate pages.",systems:"Account-managed onboarding.",note:"Low confidence on the current cloud lineup."},
+ {name:"Wateen",tags:[],products:"Managed connectivity, cloud, security, IoT.",solutions:"Enterprise and government managed services.",content:"Corporate pages.",systems:"Account-managed onboarding.",note:"Low confidence on the current cloud lineup."},
+ {name:"Navicosoft",tags:["See PK hosting"],products:"Dedicated servers and VPS for SMB corporates.",solutions:"Mid-size companies wanting local support.",content:"Articles library.",systems:"Client area plus cPanel or root access."},
+ {name:"HosterPK / QCloud",tags:[],products:"VPS, dedicated and cloud; QCloud says it runs a Tier-3 data centre.",solutions:"SMB corporates.",content:"Vendor blogs.",systems:"Client portals.",note:"Tier-3 and latency figures are vendor claims."}
+]},
+{id:"glob-host",title:"Corporate web hosting, global",intro:"Managed platforms for enterprise web teams. The online system is the product: Git workflows, staging environments, CLIs and APIs.",items:[
+ {name:"WordPress VIP",tags:["Automattic"],products:"Enterprise WordPress, decoupled/headless WordPress, Parse.ly analytics, content AI tools.",solutions:"Media publishers, government and Fortune 500 marketing sites.",content:"docs.wpvip.com, customer case studies, webinars.",systems:"VIP Dashboard, GitHub-based deploys, VIP-CLI, support ticketing with SLAs."},
+ {name:"Acquia",tags:["Drupal"],products:"Acquia Cloud Platform, Site Factory (multisite), DAM, CDP, Campaign Studio, Site Studio low-code builder.",solutions:"Digital experience platform for higher education, government, pharma and multi-brand companies.",content:"Acquia Academy certifications, docs, Drupal community leadership.",systems:"Cloud Platform UI, Acquia CLI, API, environment management."},
+ {name:"WP Engine",tags:[],products:"Managed WordPress, WooCommerce hosting, headless (Atlas), Smart Plugin Manager, Genesis/ACF, Local dev app.",solutions:"Agencies and enterprise marketing teams.",content:"Resource centre, Torque news site, developer docs.",systems:"User Portal, Git push, SSH gateway, API, staging environments."},
+ {name:"Pantheon",tags:[],products:"WordPress, Drupal and Next.js hosting with Dev/Test/Live and Multidev environments.",solutions:"Web operations for universities and enterprises.",content:"Extensive docs, WebOps guides.",systems:"Site Dashboard, Terminus CLI, Git, Autopilot updates."},
+ {name:"Kinsta",tags:["On Google Cloud"],products:"Managed WordPress, application hosting, database hosting, static-site hosting.",solutions:"Agencies, SaaS marketing sites, high-traffic WordPress.",content:"Large blog and knowledge base (a major SEO asset).",systems:"MyKinsta dashboard, DevKinsta local tool, API, APM tool."},
+ {name:"Rackspace Technology",tags:["Managed MSP"],products:"Managed AWS, Azure and Google Cloud; private cloud; managed security; application and data services.",solutions:"Outsourced cloud operations for enterprises.",content:"Whitepapers, cloud insights, events.",systems:"Rackspace customer portal, ticketing, account management."},
+ {name:"Liquid Web / Nexcess",tags:[],products:"Managed dedicated servers, VPS, cloud, managed WordPress and WooCommerce (Nexcess).",solutions:"SMB to mid-market with compliance needs (HIPAA, PCI).",content:"Knowledge base and blog.",systems:"Customer portal, API, InterWorx/cPanel/Plesk options."},
+ {name:"Vercel / Netlify",tags:["Frontend cloud"],products:"Git-based deploys, serverless and edge functions, preview environments, AI SDK (Vercel), forms and identity (Netlify).",solutions:"Headless commerce and modern marketing sites.",content:"Templates gallery, docs, Next.js stewardship (Vercel).",systems:"Dashboard, CLI, preview URLs per pull request, v0 AI builder (Vercel)."},
+ {name:"Akamai Cloud (Linode)",tags:[],products:"Compute, Kubernetes (LKE), object storage, managed databases, CDN and security.",solutions:"Distributed apps near the edge.",content:"Linode Docs tutorials library.",systems:"Cloud Manager, API, CLI, Terraform provider."},
+ {name:"DigitalOcean / Cloudways",tags:[],products:"Droplets, App Platform, managed databases, Kubernetes, GPU droplets; Cloudways managed hosting on top.",solutions:"Startups, SMBs and agencies.",content:"DigitalOcean Community tutorials, one of the largest developer content libraries.",systems:"Cloud control panel, API, doctl CLI, Cloudways platform UI."}
+]},
+{id:"storage",title:"Corporate cloud storage, global",intro:"Two groups: collaboration storage for end users, and object storage for developers and backups.",items:[
+ {name:"Microsoft OneDrive / SharePoint",tags:["Collab"],products:"File sync, sites, Teams files, Copilot over content.",solutions:"Intranets, document management, records compliance.",content:"Microsoft Learn docs and adoption kits.",systems:"Microsoft 365 admin centre, Purview compliance, desktop and mobile apps."},
+ {name:"Google Drive",tags:["Collab"],products:"Drive, shared drives, Docs/Sheets, Gemini over files.",solutions:"Real-time collaboration for cloud-native teams.",content:"Workspace Learning Center and admin help.",systems:"Admin console, Vault (eDiscovery), Drive for desktop, mobile apps."},
+ {name:"Amazon S3",tags:["Object"],products:"S3 storage classes, Glacier archive, S3 Express One Zone, Tables and Vectors.",solutions:"Data lakes, backup, media, AI training data.",content:"AWS docs, blogs, Skill Builder.",systems:"AWS Console, CLI, SDKs, IAM, Storage Lens."},
+ {name:"Azure Blob Storage",tags:["Object"],products:"Hot, cool, cold and archive tiers; Data Lake Storage Gen2; Azure Files.",solutions:"Enterprise backup, analytics, hybrid file sharing.",content:"Microsoft Learn.",systems:"Azure portal, Storage Explorer, CLI, PowerShell."},
+ {name:"Google Cloud Storage",tags:["Object"],products:"Standard, Nearline, Coldline and Archive classes; dual-region buckets.",solutions:"Analytics and AI pipelines.",content:"Google Cloud docs and Skills Boost.",systems:"Console, gcloud CLI, client libraries."},
+ {name:"Box",tags:["Content cloud"],products:"Box Hubs, Box AI, Shield (security), Sign, Relay (workflow), Canvas.",solutions:"Regulated industries: finance, life sciences, government.",content:"Box community, Box Works events.",systems:"Admin console, 1,500+ integrations, Box Drive, API."},
+ {name:"Dropbox",tags:["Collab"],products:"Dropbox Business, Dash (AI search), Sign, DocSend, Replay.",solutions:"Creative teams and SMB file sharing.",content:"Help centre, blog.",systems:"Admin console, desktop and mobile apps, API."},
+ {name:"Egnyte",tags:["Hybrid"],products:"Hybrid file sharing, governance, ransomware detection, industry editions.",solutions:"Construction, engineering and life sciences.",content:"Industry guides.",systems:"Admin console, Storage Sync appliance, desktop app."},
+ {name:"Wasabi",tags:["Object"],products:"Hot cloud storage with no egress fees, surveillance and backup editions.",solutions:"Low-cost backup targets (Veeam and similar).",content:"Partner guides.",systems:"Web console, S3-compatible API."},
+ {name:"Backblaze B2 / IBM COS",tags:["Object"],products:"Low-cost S3-compatible storage (B2); enterprise object storage (IBM).",solutions:"Backup, archive, media.",content:"Backblaze's drive-stats reports are a well-known content asset.",systems:"Web console, S3 API, CLI."}
+]},
+{id:"infra",title:"Cloud infrastructure, global",intro:"Q2 2026 (Synergy): AWS about 28%, Azure about 20%, Google Cloud about 15%. The others hold low single digits each. Every one runs a full self-service console, CLI and API, a marketplace and a partner programme.",items:[
+ {name:"AWS",tags:["#1"],products:"240+ services: EC2, S3, RDS, Lambda, EKS, Bedrock (generative AI), SageMaker, Trainium chips.",solutions:"Everything from startups to government (GovCloud).",content:"re:Invent, AWS blogs, Skill Builder, certifications.",systems:"Management Console, CLI, CloudFormation, Marketplace, Cost Explorer, Partner Network."},
+ {name:"Microsoft Azure",tags:["#2"],products:"VMs, AKS, Azure OpenAI/Foundry, SQL, Fabric, Arc (hybrid).",solutions:"Enterprises already on Microsoft 365, Windows and .NET.",content:"Microsoft Learn, Ignite and Build.",systems:"Azure portal, CLI, Bicep, Marketplace, Cost Management, CSP partner programme."},
+ {name:"Google Cloud",tags:["#3"],products:"Compute Engine, GKE, BigQuery, Vertex AI and Gemini, TPUs.",solutions:"Data, analytics and AI-first companies.",content:"Google Cloud Next, Skills Boost.",systems:"Console, gcloud, Marketplace, partner programme."},
+ {name:"Oracle Cloud (OCI)",tags:[],products:"Compute, Autonomous Database, AI superclusters, Fusion apps.",solutions:"Oracle database shops, large AI training.",content:"Oracle University.",systems:"OCI Console, CLI, Terraform, multicloud database offerings in Azure, AWS and Google."},
+ {name:"Alibaba Cloud",tags:["Asia #1"],products:"ECS, OSS, PolarDB, Qwen AI models.",solutions:"China and Asia-Pacific businesses.",content:"Alibaba Cloud Academy.",systems:"Console, API, Marketplace."},
+ {name:"CoreWeave",tags:["AI GPU"],products:"GPU cloud for training and inference, Kubernetes-native.",solutions:"AI labs and model builders.",content:"Technical blog.",systems:"Cloud console, Kubernetes, API."},
+ {name:"IBM Cloud",tags:[],products:"VPC, Power/Z in cloud, watsonx AI, Red Hat OpenShift.",solutions:"Regulated industries and hybrid cloud.",content:"IBM Developer.",systems:"Console, CLI, Terraform."},
+ {name:"Huawei Cloud",tags:[],products:"ECS, ModelArts, Pangu AI models.",solutions:"China, Middle East and Africa, emerging markets (active in Pakistan).",content:"Huawei Developer.",systems:"Console, API."},
+ {name:"Tencent Cloud",tags:[],products:"CVM, gaming, media and live-streaming services.",solutions:"Gaming and media companies.",content:"Developer docs.",systems:"Console, API."},
+ {name:"Salesforce / DigitalOcean / OVHcloud",tags:[],products:"Salesforce counts in Synergy's figures. DigitalOcean and OVHcloud are the best-known pure IaaS players after the giants.",solutions:"SMB IaaS (DigitalOcean); European sovereign cloud (OVHcloud).",content:"Tutorials and community.",systems:"Control panels, APIs."}
+]},
+{id:"saas",title:"SaaS providers, global",intro:"These vendors run app marketplaces, admin centres and partner and reseller programmes. The partner programmes are how a regional host like b2cloudio can resell them.",items:[
+ {name:"Microsoft",tags:[],products:"Microsoft 365, Teams, Dynamics 365, Copilot.",solutions:"Productivity, ERP and CRM.",content:"Microsoft Learn.",systems:"M365 admin centre, AppSource, CSP reseller programme."},
+ {name:"Salesforce",tags:[],products:"Sales, Service and Marketing Cloud; Agentforce; Slack; Tableau.",solutions:"CRM and AI agents.",content:"Trailhead learning, Dreamforce.",systems:"Setup admin, AppExchange marketplace."},
+ {name:"Oracle",tags:[],products:"Fusion ERP, NetSuite, HCM.",solutions:"Finance and ERP.",content:"Oracle University.",systems:"Admin consoles, SuiteApp marketplace."},
+ {name:"SAP",tags:[],products:"S/4HANA Cloud, SuccessFactors, Ariba, Concur, Joule AI.",solutions:"Enterprise ERP.",content:"SAP Learning, community.",systems:"SAP for Me portal, SAP Store."},
+ {name:"Adobe",tags:[],products:"Creative Cloud, Experience Cloud, Acrobat, Firefly.",solutions:"Creative work and marketing.",content:"Adobe Summit, tutorials.",systems:"Admin Console, Exchange marketplace."},
+ {name:"ServiceNow",tags:[],products:"ITSM, ITOM, HR and customer service workflows, AI agents.",solutions:"IT and enterprise workflow.",content:"Now Learning, Knowledge event.",systems:"Now Platform admin, ServiceNow Store."},
+ {name:"Workday",tags:[],products:"HCM, Financials, Adaptive Planning.",solutions:"HR and finance for large enterprises.",content:"Workday Community.",systems:"Tenant admin, Marketplace."},
+ {name:"Intuit",tags:[],products:"QuickBooks, TurboTax, Mailchimp.",solutions:"SMB accounting and marketing.",content:"QuickBooks resource centre.",systems:"Web and mobile apps, App Store, ProAdvisor programme."},
+ {name:"Atlassian",tags:[],products:"Jira, Confluence, Loom, Rovo AI.",solutions:"Software and project teams.",content:"Atlassian University, community.",systems:"Admin hub, Marketplace."},
+ {name:"HubSpot / Shopify / Zoom",tags:[],products:"CRM and marketing (HubSpot); commerce (Shopify); communications (Zoom).",solutions:"SMB growth stack.",content:"HubSpot Academy, a benchmark for content marketing.",systems:"Portals, app marketplaces, partner programmes."}
+]},
+{id:"paas",title:"PaaS providers, global",intro:"Platforms where customers deploy code without managing servers.",items:[
+ {name:"Azure App Service / Functions",tags:[],products:"Web apps, serverless functions, Container Apps.",solutions:".NET and enterprise apps.",content:"Microsoft Learn.",systems:"Azure portal, GitHub Actions, CLI."},
+ {name:"AWS Elastic Beanstalk / Lambda / Amplify",tags:[],products:"Managed app runtime, serverless, frontend hosting.",solutions:"Event-driven and web apps.",content:"AWS docs.",systems:"Console, SAM/CDK, CLI."},
+ {name:"Google Cloud Run / App Engine / Firebase",tags:[],products:"Serverless containers, app hosting, mobile backend.",solutions:"Containers and mobile apps.",content:"Google docs and codelabs.",systems:"Console, gcloud, Firebase console."},
+ {name:"Salesforce Platform / Heroku",tags:[],products:"Low-code apps, Heroku dynos and Postgres.",solutions:"CRM-adjacent apps.",content:"Trailhead, Dev Center.",systems:"Heroku Dashboard, CLI, Git push."},
+ {name:"Red Hat OpenShift (IBM)",tags:[],products:"Enterprise Kubernetes platform on any cloud or on-prem.",solutions:"Hybrid cloud modernisation.",content:"Red Hat Developer.",systems:"OpenShift console, oc CLI."},
+ {name:"SAP BTP",tags:[],products:"Integration, extensions, data and AI on SAP.",solutions:"SAP customers extending ERP.",content:"SAP Learning.",systems:"BTP cockpit."},
+ {name:"Oracle APEX / OCI PaaS",tags:[],products:"Low-code apps, managed Kubernetes, functions.",solutions:"Oracle database customers.",content:"Oracle LiveLabs.",systems:"OCI Console."},
+ {name:"Databricks / Snowflake",tags:["Data platforms"],products:"Lakehouse, data warehouse, AI and ML.",solutions:"Analytics and AI on enterprise data.",content:"Data + AI Summit, Snowflake Summit.",systems:"Web workspaces, SQL editors, marketplaces."},
+ {name:"Vercel / Netlify",tags:[],products:"Frontend cloud.",solutions:"Modern web apps.",content:"Templates and docs.",systems:"Dashboard, CLI, Git previews."},
+ {name:"Cloudflare Workers",tags:[],products:"Edge compute, D1, R2, Workers AI.",solutions:"Global low-latency apps.",content:"Cloudflare blog, a strong technical content brand.",systems:"Cloudflare dashboard, Wrangler CLI."}
+]},
+{id:"iaas",title:"IaaS providers, global",intro:"Raw compute, storage and networking. The vendors overlap with the cloud infrastructure list, so these entries are brief.",items:[
+ {name:"AWS EC2",tags:[],products:"Instances, VPC, EBS.",solutions:"General purpose to HPC.",content:"See AWS.",systems:"Console, CLI, API."},
+ {name:"Azure Virtual Machines",tags:[],products:"VMs, VNets, managed disks.",solutions:"Windows and enterprise workloads.",content:"See Azure.",systems:"Portal, CLI."},
+ {name:"Google Compute Engine",tags:[],products:"VMs, TPUs and GPUs.",solutions:"AI and analytics.",content:"See Google Cloud.",systems:"Console, gcloud."},
+ {name:"Alibaba ECS",tags:[],products:"Elastic compute.",solutions:"Asia-Pacific.",content:"See Alibaba Cloud.",systems:"Console."},
+ {name:"Oracle OCI Compute",tags:[],products:"Bare metal, VMs, GPU superclusters.",solutions:"Oracle database and AI workloads.",content:"See OCI.",systems:"Console."},
+ {name:"CoreWeave",tags:[],products:"GPU instances.",solutions:"AI training and inference.",content:"Blog.",systems:"Kubernetes, API."},
+ {name:"IBM Cloud VPC",tags:[],products:"VSIs, bare metal, Power.",solutions:"Regulated industries.",content:"IBM Developer.",systems:"Console."},
+ {name:"Huawei Cloud ECS",tags:[],products:"Elastic compute.",solutions:"Emerging markets.",content:"Developer docs.",systems:"Console."},
+ {name:"Tencent CVM",tags:[],products:"Cloud VMs.",solutions:"Gaming and media.",content:"Docs.",systems:"Console."},
+ {name:"DigitalOcean / Akamai / OVHcloud",tags:[],products:"Simple VMs and bare metal.",solutions:"SMBs and developers.",content:"Tutorials.",systems:"Control panel, API."}
+]},
+{id:"email",title:"Email service providers, global",intro:"Corporate mailbox providers. Transactional senders such as Amazon SES, SendGrid, Mailgun, Postmark and Brevo are a separate category and are not ranked here.",items:[
+ {name:"Microsoft 365 (Exchange Online)",tags:["Leader"],products:"Mailboxes, Outlook, Teams, Defender for Office 365, Copilot.",solutions:"Enterprise email with compliance controls.",content:"Microsoft Learn.",systems:"Exchange and M365 admin centres, Outlook apps, CSP resale through hosts."},
+ {name:"Google Workspace (Gmail)",tags:["Leader"],products:"Gmail, Calendar, Meet, Drive, Gemini.",solutions:"Cloud-first SMBs and enterprises.",content:"Learning Center.",systems:"Admin console, Gmail apps, reseller programme (used by creativeON)."},
+ {name:"Zoho Mail / Workplace",tags:["Value"],products:"Mail from about $1/user/month, Workplace suite, Zoho One.",solutions:"Cost-sensitive SMBs, strong in South Asia.",content:"Zoho blog and community.",systems:"Admin console, mobile apps, reseller programme."},
+ {name:"Proton Mail for Business",tags:["Privacy"],products:"End-to-end encrypted mail, Drive, VPN, Pass.",solutions:"Privacy-sensitive firms.",content:"Privacy blog.",systems:"Admin dashboard, apps, Bridge."},
+ {name:"Rackspace Email / Hosted Exchange",tags:[],products:"Hosted mailboxes, archiving.",solutions:"SMBs that want support included.",content:"Knowledge base.",systems:"Cloud Office control panel."},
+ {name:"Fastmail",tags:[],products:"Independent hosted email.",solutions:"Small teams.",content:"Blog.",systems:"Web and mobile apps, JMAP API."},
+ {name:"IceWarp",tags:[],products:"Email plus collaboration, on-premises or cloud.",solutions:"Exchange alternative, popular in emerging markets.",content:"Docs.",systems:"WebClient, admin console."},
+ {name:"Titan",tags:["Hosting bundle"],products:"Mailboxes sold through hosting companies.",solutions:"Hosts that want to bundle email.",content:"Partner content.",systems:"Webmail, apps, reseller APIs."},
+ {name:"GoDaddy / M365 resellers",tags:[],products:"Microsoft 365 email resold by hosts.",solutions:"SMBs that buy everything from one vendor.",content:"Help centre.",systems:"Host account dashboard."},
+ {name:"Amazon WorkMail",tags:[],products:"Hosted mailboxes on AWS.",solutions:"AWS-centric companies.",content:"AWS docs.",systems:"AWS Console.",note:"AWS has announced WorkMail's retirement; check before adopting."}
+]},
+{id:"pk-reg",title:"Domain registrars in Pakistan",intro:"PKNIC runs the .pk registry. Resellers sell .pk through PKNIC accounts and prepaid cards; most also sell gTLDs.",items:[
+ {name:"PKNIC",tags:["Registry"],products:".pk, .com.pk, .org.pk, .net.pk and other second-level domains; prepaid cards.",solutions:"Official .pk registration and renewal.",content:"How-to-pay and renewal pages, reseller directory by city.",systems:"Shared Registry System (pk5.pknic.net.pk): Billing then Pay Domains, payment by credit card, prepaid card, or cheque/draft. No cash."},
+ {name:"Paknic Pvt Ltd",tags:["ICANN"],products:".pk and gTLD domains.",solutions:"Registrants who want an ICANN-accredited Pakistani registrar.",content:"Product pages.",systems:"Online registrar account."},
+ {name:"creativeON",you:true,tags:["PKNIC Gold Partner"],products:".pk/.com.pk/.org.pk, 100+ TLDs, PKNIC scratch cards, bundled free domains on some plans.",solutions:"Domains bundled with hosting and Google Workspace.",content:"\"PKNIC Domains\" landing page.",systems:"Client portal for domain search, ordering and renewal."},
+ {name:"Domain.pk",tags:["Karachi"],products:".pk domains, hosting.",solutions:".pk specialist.",content:"Product pages.",systems:"Online ordering."},
+ {name:"PKDomain.com.pk",tags:[],products:".pk domains.",solutions:".pk specialist.",content:"Price-update notices (for example, the 1 Aug 2026 PKNIC increase).",systems:"Online ordering."},
+ {name:"WebSouls",tags:[],products:".pk and gTLD domains.",solutions:"Domains plus hosting bundles.",content:"Blog.",systems:"Client area."},
+ {name:"HosterPK",tags:[],products:"Domains.",solutions:"Bundles.",content:"\"Best domain registrar\" guide.",systems:"Client area."},
+ {name:"SoftHof",you:true,tags:[],products:".pk domains, PKNIC prepaid cards.",solutions:"Domains plus web design and hosting.",content:"Limited.",systems:"Sales-assisted; Trustpilot reviewers mention fast prepaid card delivery."},
+ {name:"Navicosoft",tags:[],products:"Domains.",solutions:"Domains plus marketing.",content:"Articles.",systems:"Client area."},
+ {name:"HostBreak / Middlehost",tags:[],products:"Domains.",solutions:"Budget bundles.",content:"Blogs.",systems:"Client area."}
+]},
+{id:"glob-reg",title:"Domain registrars, global",intro:"Ranked by .com domains under management, December 2025 (Verisign data via DomainNameWire). Positions 7 to 10 are approximate.",items:[
+ {name:"GoDaddy",tags:["~52.4M .com"],products:"Domains, Airo AI site builder, hosting, Microsoft 365 email, SSL, Afternic and Auctions aftermarket, GoDaddy Pro for agencies.",solutions:"Small businesses getting online.",content:"Large help centre and resource library.",systems:"Account dashboard, DNS manager, mobile app, Domains API, reseller programme."},
+ {name:"Namecheap (+ Spaceship)",tags:["~12.6M"],products:"Domains, EasyWP, shared hosting, Private Email, SSL, VPN.",solutions:"Price-conscious individuals and SMBs.",content:"Blog and knowledge base.",systems:"Dashboard, API, Spaceship's newer platform."},
+ {name:"Newfold Digital",tags:["~10.9M"],products:"Network Solutions, Register.com, Web.com, Bluehost, HostGator brands; Public Domain Registry for resellers.",solutions:"Mass-market SMBs.",content:"Brand blogs.",systems:"Brand dashboards, reseller APIs."},
+ {name:"Tucows",tags:["~9.77M"],products:"OpenSRS and Enom wholesale platforms, Hover retail.",solutions:"Wholesale registrar for hosts and ISPs.",content:"Reseller docs.",systems:"OpenSRS reseller control panel and API, the kind a Pakistani host might use for gTLD resale."},
+ {name:"Squarespace Domains",tags:["~8.9M"],products:"Domains (took over Google Domains), website builder, commerce.",solutions:"Creators and SMBs.",content:"Help guides.",systems:"Squarespace dashboard."},
+ {name:"IONOS",tags:["~6.1M"],products:"Domains, hosting, website builder, cloud servers, Microsoft 365.",solutions:"European SMBs.",content:"Digital Guide content hub.",systems:"Control panel, Cloud Panel, API."},
+ {name:"Alibaba Cloud (HiChina)",tags:[],products:"Domains, ICP filing support.",solutions:"China market.",content:"Docs.",systems:"Console."},
+ {name:"Hostinger",tags:["Fast grower"],products:"Domains, hosting, AI website builder, Horizons AI app builder, email.",solutions:"Global budget market, strong in South Asia.",content:"Massive tutorials and blog library.",systems:"hPanel (its own control panel), mobile app, AI assistant."},
+ {name:"NameSilo",tags:["6M+ total"],products:"Low-cost domains, marketplace.",solutions:"Domain investors.",content:"Blog.",systems:"Dashboard, API, bulk tools."},
+ {name:"Dynadot",tags:["3M+ .com"],products:"Domains, marketplace, auctions, site builder.",solutions:"Investors and SMBs.",content:"Blog.",systems:"Dashboard, API, mobile app."}
+]}
+];
+
+const TAKE = [
+ ["The online client portal is the baseline everywhere.","Every Pakistani host offers self-service ordering, invoices, renewals and tickets plus cPanel. The telcos (Nayatel, Garaj, PTCL) go further with self-service cloud portals that provision VMs and bill in PKR. b2cloudio needs at least this: one login for domains, hosting, email, cloud servers and billing."],
+ ["Local payments decide purchases.","JazzCash, Easypaisa, NayaPay, bank transfer and PKNIC prepaid cards show up in nearly every competitor's sales pitch, while international registrars often can't take PKR. Instant wallet checkout with automatic provisioning is a clear advantage."],
+ ["creativeON's edge is breadth plus partnerships.","It is a PKNIC Gold Partner and a Google Workspace partner, has had servers in Lahore since 2001, and sells everything from shared hosting to dedicated servers. Its content is mostly WordPress education and PKR price pages, with a 100-day refund as a trust signal. Gaps: a small public review footprint (18 WHTop ratings) and conflicting trial terms."],
+ ["SoftHof competes on bundling services, not software.","It sells hosting plus web design, SEO and e-commerce builds. Its online presence is thin: no visible client portal and little editorial content, so it relies on sales staff and phone contact. A polished self-service experience would stand out against it."],
+ ["Content marketing has moved to comparison and AI search.","Middlehost publishes \"vs Hostinger\" pages, city pages and an llms.txt file, and WebSouls ranks itself first in its own top-10 list. Globally, DigitalOcean, Kinsta, Hostinger and HubSpot win on huge tutorial libraries. A b2cloudio knowledge base plus honest comparison pages is a cheap, durable channel."],
+ ["Reselling global SaaS and email is the margin layer.","Local hosts resell Google Workspace, Microsoft 365, Zoho and Titan. Wholesale platforms (OpenSRS/Tucows, Microsoft CSP, Google reseller) let b2cloudio offer the same products under its own billing."],
+ ["Data residency is the opening against the global giants.","PTCL, Nayatel and Garaj sell \"hosted in Pakistan\" to banks and government, and creativeON markets Pakistan-based servers. A clear residency, SLA and uptime story competes where AWS and Azure have no local region."]
+];
+
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]));
+const nav = document.getElementById("nav"), main = document.getElementById("main");
+const short = {take:"Takeaways","pk-hosting":"PK hosting","pk-corp":"PK corporate","glob-host":"Global hosting",storage:"Storage",infra:"Cloud infra",saas:"SaaS",paas:"PaaS",iaas:"IaaS",email:"Email","pk-reg":"PK registrars","glob-reg":"Global registrars"};
+C.forEach(c => {
+  const a = document.createElement("a"); a.href = "#" + c.id; a.textContent = short[c.id]; nav.insertBefore(a, nav.lastElementChild);
+  const s = document.createElement("section"); s.id = c.id;
+  if (c.take) {
+    s.innerHTML = `<h2>${esc(c.title)}</h2><p class="intro">Patterns across all the lists, framed for a Pakistani hosting and cloud provider.</p><div class="take"><ol>${TAKE.map(t=>`<li><b>${esc(t[0])}</b> ${esc(t[1])}</li>`).join("")}</ol></div>`;
+  } else {
+    s.innerHTML = `<h2>${esc(c.title)}</h2><p class="intro">${esc(c.intro)}</p>` + c.items.map((p,i)=>`
+    <article class="prov${p.you?" you":""}" data-text="${esc((p.name+" "+p.products+" "+p.solutions+" "+p.content+" "+p.systems+" "+(p.tags||[]).join(" ")).toLowerCase())}">
+      <div class="who"><div class="rank">#${i+1}</div><div class="name">${esc(p.name)}</div>
+        ${p.you?'<span class="tag you">Competitor</span>':""}${(p.tags||[]).map(t=>`<span class="tag">${esc(t)}</span>`).join("")}${p.note?'<span class="tag low">Low confidence</span>':""}</div>
+      <div class="fields">
+        <div class="f"><h4>Products &amp; services</h4><p>${esc(p.products)}</p></div>
+        <div class="f"><h4>Solutions / target market</h4><p>${esc(p.solutions)}</p></div>
+        <div class="f"><h4>Content</h4><p>${esc(p.content)}</p></div>
+        <div class="f"><h4>Online systems for clients</h4><p>${esc(p.systems)}</p></div>
+        ${p.note?`<div class="note">${esc(p.note)}</div>`:""}
+      </div></article>`).join("") + `<p class="empty" hidden>No providers in this list match the filter.</p>`;
+  }
+  main.appendChild(s);
+});
+document.getElementById("q").addEventListener("input", e => {
+  const q = e.target.value.trim().toLowerCase();
+  document.querySelectorAll("section").forEach(s => {
+    const rows = s.querySelectorAll(".prov"); if (!rows.length) return;
+    let shown = 0;
+    rows.forEach(r => { const m = !q || r.dataset.text.includes(q); r.hidden = !m; if (m) shown++; });
+    s.querySelector(".empty").hidden = shown > 0;
+  });
+});
+</script>

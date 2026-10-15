@@ -1,0 +1,300 @@
+<title>b2cloud.io Company Profile</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@500;700;900&family=Red+Hat+Text:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: corporate MSP profile. Cover → who we are → practice areas (grouped service cards, one "from" price + Let's talk) → service levels → commitments → regions → industries → how we work → FAQ → contact */
+:root{
+  --bg:#f4f6f9; --surface:#ffffff; --ink:#0f1d33; --muted:#566278; --line:#d9dfe8;
+  --brand:#0b5fae; --brand-soft:#e3eefa; --accent:#0f8a68; --accent-soft:#e1f4ee; --band:#0d2440; --band-fg:#e8eef7; --band-muted:#a9b8cc;
+  --display:"Red Hat Display", "Segoe UI", Arial, sans-serif;
+  --body:"Red Hat Text", "Segoe UI", system-ui, sans-serif;
+  --mono:"IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0c1320; --surface:#141d2d; --ink:#e6ecf5; --muted:#9dabc0; --line:#27334a;
+  --brand:#6fb1f2; --brand-soft:#16294a; --accent:#4fd1a8; --accent-soft:#11322a; --band:#08101c; --band-fg:#e6ecf5; --band-muted:#94a5bd; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0c1320; --surface:#141d2d; --ink:#e6ecf5; --muted:#9dabc0; --line:#27334a;
+  --brand:#6fb1f2; --brand-soft:#16294a; --accent:#4fd1a8; --accent-soft:#11322a; --band:#08101c; --band-fg:#e6ecf5; --band-muted:#94a5bd; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16.5px;line-height:1.6;margin:0}
+.col{max-width:1140px;margin:0 auto;padding-inline:20px}
+h1,h2,h3{font-family:var(--display);line-height:1.15;text-wrap:balance;margin:0}
+h2{font-size:clamp(1.55rem,3.2vw,2.1rem);font-weight:900;letter-spacing:-.01em}
+h3{font-size:1.12rem;font-weight:700}
+p{margin:0}
+.eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--brand);margin-bottom:10px}
+.lede{color:var(--muted);max-width:72ch;margin-top:10px;font-size:1.03rem}
+section{padding-block:60px 8px;scroll-margin-top:60px}
+
+.cover{background:var(--band);color:var(--band-fg);padding-block:56px 44px}
+.mark{font-family:var(--display);font-weight:900;font-size:1.1rem;display:flex;align-items:center;gap:10px}
+.mark i{display:inline-block;width:14px;height:14px;border-radius:3px;background:var(--brand);box-shadow:8px 8px 0 -2px var(--accent)}
+.cover h1{font-size:clamp(2.1rem,5.2vw,3.5rem);font-weight:900;letter-spacing:-.02em;margin-top:34px;max-width:20ch}
+.cover p{color:var(--band-muted);max-width:66ch;margin-top:16px;font-size:1.08rem}
+.ctas{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+.btn{display:inline-flex;align-items:center;gap:6px;font-weight:600;text-decoration:none;padding:11px 18px;border-radius:8px;font-size:.95rem}
+.btn.primary{background:var(--accent);color:var(--band)}
+.btn.ghost{border:1px solid #ffffff44;color:var(--band-fg)}
+.btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.practices{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:34px;padding-top:20px;border-top:1px solid #ffffff22}
+.practices a{color:var(--band-fg);text-decoration:none;border:1px solid #ffffff26;border-radius:10px;padding:12px;min-width:0}
+.practices a:hover,.practices a:focus-visible{border-color:var(--accent);outline:none}
+.practices b{display:block;font-family:var(--display);font-size:.98rem}
+.practices span{display:block;color:var(--band-muted);font-size:.8rem;margin-top:3px;line-height:1.4}
+.offices{display:flex;flex-wrap:wrap;gap:8px 24px;margin-top:22px;align-items:baseline}
+.offices .lbl{font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--band-muted)}
+.offices b{font-family:var(--display);font-weight:700;font-size:.95rem}
+
+nav.rail{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+nav.rail .col{display:flex;gap:8px;overflow-x:auto;padding-block:10px}
+nav.rail a{font-family:var(--mono);font-size:.75rem;text-decoration:none;color:var(--ink);border:1px solid var(--line);background:var(--surface);padding:5px 11px;border-radius:999px;white-space:nowrap}
+nav.rail a:hover,nav.rail a:focus-visible{border-color:var(--brand);color:var(--brand);outline:none}
+
+.about{display:grid;grid-template-columns:1.15fr .85fr;gap:40px;margin-top:22px}
+.about>*{min-width:0}
+.about p+p{margin-top:12px}
+.pillars{display:grid;gap:10px;align-self:start}
+.pillars div{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.pillars b{font-family:var(--display);display:block}
+.pillars span{color:var(--muted);font-size:.92rem}
+
+.practice{margin-top:48px;padding-top:26px;border-top:3px solid var(--ink);scroll-margin-top:60px}
+.practice .ph{display:flex;justify-content:space-between;gap:16px;align-items:end;flex-wrap:wrap}
+.practice .ph h3{font-size:clamp(1.4rem,3vw,1.8rem);font-weight:900}
+.practice .ph p{color:var(--muted);max-width:60ch}
+.svc{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:26px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:24px 26px;margin-top:14px}
+.svc .tag{font-family:var(--mono);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.svc h4.name{font-family:var(--display);font-size:1.28rem;margin:6px 0 0;line-height:1.2}
+.svc .desc{color:var(--muted);margin-top:10px}
+.svc .ideal{margin-top:14px;font-size:.9rem}
+.svc .ideal b{font-weight:600}
+.svc .cols{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.svc h5{font-family:var(--mono);font-weight:500;font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 6px}
+.svc ul{margin:0;padding-left:18px;font-size:.93rem;display:grid;gap:3px}
+.svc .foot{grid-column:1/-1;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:14px}
+.price{font-variant-numeric:tabular-nums;font-size:.95rem;color:var(--muted)}
+.price b{font-family:var(--display);font-size:1.22rem;font-weight:900;color:var(--ink)}
+.talk{font-weight:600;color:var(--brand);text-decoration:none;border:1px solid var(--brand);padding:8px 14px;border-radius:8px;font-size:.92rem}
+.talk:hover,.talk:focus-visible{background:var(--brand);color:var(--surface);outline:none}
+.new{font-family:var(--mono);font-size:.62rem;letter-spacing:.06em;background:var(--accent-soft);color:var(--accent);padding:2px 6px;border-radius:4px;margin-left:6px;vertical-align:2px}
+
+.tiers{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.tier{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:10px}
+.tier.mid{border:2px solid var(--brand)}
+.tier .for{color:var(--muted);font-size:.92rem}
+.tier ul{margin:0;padding-left:18px;font-size:.92rem;display:grid;gap:3px}
+.tier .price{margin-top:auto;padding-top:10px;border-top:1px solid var(--line)}
+
+.commit{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:22px}
+.commit div{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+.commit b{display:block;font-family:var(--display);font-size:1.05rem}
+.commit span{color:var(--muted);font-size:.9rem}
+
+.regions{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-top:22px}
+.regions div{border-top:3px solid var(--brand);padding-top:12px}
+.regions p{color:var(--muted);font-size:.9rem;margin-top:4px}
+
+.ind{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:22px}
+.ind div{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px}
+.ind p{color:var(--muted);font-size:.88rem;margin-top:4px}
+
+.steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:24px}
+.steps div{border-top:3px solid var(--brand);padding-top:12px}
+.steps .n{font-family:var(--mono);font-size:.72rem;color:var(--muted)}
+.steps p{color:var(--muted);font-size:.93rem;margin-top:4px}
+
+.platforms{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.platforms span{font-family:var(--mono);font-size:.78rem;border:1px solid var(--line);background:var(--surface);padding:6px 11px;border-radius:6px}
+
+.faq{margin-top:20px;display:grid;gap:10px;max-width:85ch}
+.faq details{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 18px}
+.faq summary{font-family:var(--display);font-weight:700;cursor:pointer}
+.faq summary:focus-visible{outline:2px solid var(--brand);outline-offset:3px}
+.faq p{color:var(--muted);margin-top:8px}
+
+.contact{background:var(--band);color:var(--band-fg);border-radius:16px;padding:36px;margin-block:64px 24px;display:grid;grid-template-columns:1fr 1fr;gap:30px}
+.contact p{color:var(--band-muted);margin-top:10px;max-width:60ch}
+.contact .site{font-family:var(--mono);font-size:1.15rem;color:var(--accent);margin-top:16px}
+.emails{display:grid;gap:10px;margin-top:22px}
+.emails div{display:grid;grid-template-columns:90px 1fr;gap:10px;align-items:baseline;border-bottom:1px solid #ffffff22;padding-bottom:8px}
+.emails span{font-family:var(--mono);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--band-muted)}
+.emails a{font-family:var(--mono);color:var(--band-fg);text-decoration:none;user-select:all;overflow-wrap:anywhere}
+.emails a:hover,.emails a:focus-visible{color:var(--accent);outline:none}
+.contact ul{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.contact li{border-bottom:1px solid #ffffff22;padding-bottom:10px}
+.contact li b{font-family:var(--display)}
+.contact li span{display:block;color:var(--band-muted);font-size:.85rem}
+.contact li em{display:block;font-style:normal;font-family:var(--mono);font-size:.78rem;color:var(--band-muted);opacity:.8;margin-top:3px}
+.terms{color:var(--muted);font-size:.84rem;margin-bottom:56px;max-width:95ch}
+
+@media (max-width:980px){.practices,.regions{grid-template-columns:repeat(3,minmax(0,1fr))}.ind{grid-template-columns:1fr 1fr}}
+@media (max-width:900px){.svc{grid-template-columns:1fr}.steps,.commit{grid-template-columns:1fr 1fr}.tiers{grid-template-columns:1fr}}
+@media (max-width:640px){.about,.contact,.svc .cols,.steps,.commit,.ind,.practices,.regions{grid-template-columns:1fr}.svc{padding:20px}.contact{padding:24px}}
+</style>
+
+<header class="cover">
+  <div class="col">
+    <div class="mark"><i aria-hidden="true"></i>b2cloud.io</div>
+    <h1>Domains, hosting and cloud, managed by people who own the outcome</h1>
+    <p>b2cloud.io designs, migrates, operates and secures the online foundations companies depend on: domains, email, web and corporate hosting, cloud infrastructure, platforms, business software and cloud storage. One accountable partner, clear service levels, and engineers who know your environment.</p>
+    <div class="ctas"><a class="btn primary" href="#contact">Let's talk</a><a class="btn ghost" href="#services">Explore services</a></div>
+    <div class="practices" aria-label="Practice areas">
+      <a href="#p-dom"><b>Domains &amp; Email</b><span>Domains, DNS, SSL, business email</span></a>
+      <a href="#p-host"><b>Hosting</b><span>Web hosting, corporate hosting</span></a>
+      <a href="#p-cloud"><b>Cloud</b><span>IaaS, PaaS, SaaS, cloud storage</span></a>
+      <a href="#p-ops"><b>Management &amp; Support</b><span>Consultancy, migration, 24/7 support</span></a>
+    </div>
+    <div class="offices"><span class="lbl">Offices</span><b>United Arab Emirates</b><b>United Kingdom</b><b>Canada</b><b>Czech Republic</b><b>Pakistan</b></div>
+  </div>
+</header>
+
+<nav class="rail" aria-label="Sections"><div class="col">
+  <a href="#about">About</a><a href="#services">Services</a><a href="#levels">Service levels</a><a href="#commitments">Commitments</a><a href="#regions">Regions</a><a href="#approach">How we work</a><a href="#faq">FAQ</a><a href="#contact">Contact</a>
+</div></nav>
+
+<main class="col">
+  <section id="about">
+    <div class="eyebrow">Who we are</div>
+    <h2>Your technology, managed end to end</h2>
+    <div class="about">
+      <div>
+        <p>Most companies run on a patchwork of providers: a domain registrar here, a hosting company there, a cloud account and email from other vendors, and a contractor in between. When something breaks, nobody owns the problem.</p>
+        <p>b2cloud.io takes ownership. We operate our own platforms where that serves you best, extend our offering through trusted white-label infrastructure partners, and manage the public clouds and software you already use. Whatever runs underneath, you deal with a single team, one agreement and one invoice.</p>
+        <p>From offices in five countries, we serve clients across the Middle East, Europe, North America and South Asia, with regional infrastructure for data residency and support that follows the sun.</p>
+      </div>
+      <div class="pillars">
+        <div><b>Managed, not just hosted</b><span>We monitor, patch, back up, secure and optimise. That's the work behind the service.</span></div>
+        <div><b>Vendor-neutral</b><span>We recommend the platform that fits: our own, a partner's, or AWS, Azure, Google Cloud or Oracle.</span></div>
+        <div><b>Accountable</b><span>Defined service levels, named contacts and regular service reviews.</span></div>
+        <div><b>Secure by default</b><span>Hardening, monitoring and backup are part of every managed service.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="services">
+    <div class="eyebrow">Services</div>
+    <h2>Domains, hosting and cloud from one accountable team</h2>
+    <p class="lede">Take any service on its own or combine them into one managed agreement. Indicative starting prices are shown; your proposal follows a short assessment of your environment.</p>
+    <div id="practiceList"></div>
+    <p class="lede" style="margin-top:28px">Need backup and data protection for your hosting or cloud? See <a href="https://tective.cloud" target="_blank" rel="noopener" style="color:var(--brand);font-weight:600">Tective at tective.cloud</a>, our secure sync, backup and recovery platform.</p>
+  </section>
+
+  <section id="levels">
+    <div class="eyebrow">Service levels</div>
+    <h2>Choose how much you hand over</h2>
+    <p class="lede">Every managed service is available at three levels, depending on how much your own team wants to keep in-house.</p>
+    <div class="tiers">
+      <div class="tier"><h3>Foundation</h3><p class="for">For teams with strong in-house IT who want a reliable platform and a safety net.</p><ul><li>24/7 monitoring and alerting</li><li>Backups and restore support</li><li>Business-hours support desk</li><li>Monthly health report</li></ul><div class="price">from <b>$129</b>/mo</div></div>
+      <div class="tier mid"><h3>Advanced</h3><p class="for">For teams with skills gaps who want us to run day-to-day operations.</p><ul><li>Everything in Foundation</li><li>24/7 incident response</li><li>Patching and security hardening</li><li>Cost-optimisation reviews</li><li>Change management</li></ul><div class="price">from <b>$549</b>/mo</div></div>
+      <div class="tier"><h3>Premium</h3><p class="for">For companies that want to outsource operations fully, with a dedicated team.</p><ul><li>Everything in Advanced</li><li>Named service manager and engineers</li><li>Custom SLA and reporting</li><li>Quarterly architecture and security reviews</li><li>Priority escalation</li></ul><div class="price"><b>Let's talk</b></div></div>
+    </div>
+  </section>
+
+  <section id="commitments">
+    <div class="eyebrow">Our commitments</div>
+    <h2>What every client can count on</h2>
+    <div class="commit">
+      <div><b>24/7/365 monitoring</b><span>Every managed system is watched around the clock from our operations centre.</span></div>
+      <div><b>Fast response</b><span>Critical incidents get a response within 15 minutes on Premium and 30 minutes on Advanced, around the clock.</span></div>
+      <div><b>Up to 99.99% availability</b><span>Infrastructure availability targets backed by service credits, defined per service in your agreement.</span></div>
+      <div><b>Documented environments</b><span>Runbooks, diagrams and credentials kept current and handed back to you on request.</span></div>
+      <div><b>Transparent cost</b><span>Public cloud and software at provider list price, with monthly reports and savings recommendations.</span></div>
+      <div><b>No lock-in</b><span>Your data and documentation stay yours, with an exit plan agreed at the start.</span></div>
+    </div>
+  </section>
+
+  <section id="regions">
+    <div class="eyebrow">Global presence</div>
+    <h2>Local teams, regional infrastructure</h2>
+    <p class="lede">Hosting regions in each market for data residency and low latency, with support across time zones.</p>
+    <div class="regions">
+      <div><h3>United Arab Emirates</h3><p>Middle East &amp; Africa. Regional hosting and enterprise accounts.</p></div>
+      <div><h3>United Kingdom</h3><p>UK &amp; Ireland. UK-hosted services and GDPR-aligned operations.</p></div>
+      <div><h3>Czech Republic</h3><p>European Union. EU data residency and EU-wide support.</p></div>
+      <div><h3>Canada</h3><p>North America. Canadian-hosted services for privacy-sensitive clients.</p></div>
+      <div><h3>Pakistan</h3><p>South Asia, plus our 24/7 engineering and operations centre.</p></div>
+    </div>
+    <p class="lede" style="margin-top:22px">Platforms we manage:</p>
+    <div class="platforms"><span>Amazon Web Services</span><span>Microsoft Azure</span><span>Google Cloud</span><span>Oracle Cloud</span><span>VMware &amp; Proxmox</span><span>Kubernetes</span><span>Microsoft 365</span><span>Google Workspace</span><span>Zoho</span><span>Linux &amp; Windows Server</span><span>cPanel, DirectAdmin &amp; Plesk</span></div>
+  </section>
+
+
+  <section id="approach">
+    <div class="eyebrow">How we work</div>
+    <h2>From first call to steady state</h2>
+    <div class="steps">
+      <div><span class="n">01</span><h3>Assess</h3><p>We review your systems, risks, costs and goals, and agree what success looks like.</p></div>
+      <div><span class="n">02</span><h3>Design</h3><p>We propose the right platforms, service level and price, with a clear scope.</p></div>
+      <div><span class="n">03</span><h3>Transition</h3><p>We migrate and onboard with minimal disruption, documenting everything we take over.</p></div>
+      <div><span class="n">04</span><h3>Operate &amp; improve</h3><p>We run, report and optimise, with regular reviews of performance, security and spend.</p></div>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="eyebrow">FAQ</div>
+    <h2>Common questions</h2>
+    <div class="faq">
+      <details><summary>Do we have to move our cloud accounts to you?</summary><p>No. We can manage your existing AWS, Azure, Google Cloud or Oracle accounts, or provide them on our consolidated billing. You choose.</p></details>
+      <details><summary>Can our data stay in our country?</summary><p>Yes. We offer hosting in the UAE, UK, EU, Canada and Pakistan, and design services around your residency and compliance requirements.</p></details>
+      <details><summary>What if we already have an IT team?</summary><p>Choose Foundation or a co-managed arrangement. We cover out-of-hours monitoring, specialist skills or specific platforms, and your team keeps control.</p></details>
+      <details><summary>How long does onboarding take?</summary><p>Most single-service engagements start within a few weeks. Larger migrations follow a plan agreed during the assessment.</p></details>
+      <details><summary>How are we billed?</summary><p>One monthly or annual invoice in USD covering services, licences and cloud usage. You can pay by card, bank transfer, direct debit or invoice terms. Taxes apply according to your billing country.</p></details>
+    </div>
+  </section>
+
+  <section id="contact" style="padding-top:0">
+    <div class="contact">
+      <div>
+        <div class="eyebrow" style="color:var(--accent)">Let's talk</div>
+        <h2>Start with a free assessment</h2>
+        <p>Tell us what you run today. We'll review your cloud, hosting and IT setup, show you where to reduce risk and cost, and propose a managed service that fits.</p>
+        <div class="emails">
+          <div><span>General</span><a href="mailto:info@b2cloud.io">info@b2cloud.io</a></div>
+          <div><span>Sales</span><a href="mailto:sales@b2cloud.io">sales@b2cloud.io</a></div>
+          <div><span>Support</span><a href="mailto:support@b2cloud.io">support@b2cloud.io</a></div>
+        </div>
+        <div class="site">b2cloud.io</div>
+      </div>
+      <ul aria-label="Offices">
+        <li><b>United Arab Emirates</b><span>Middle East &amp; Africa</span><em>[Office address to be added]</em></li>
+        <li><b>United Kingdom</b><span>UK &amp; Ireland</span><em>[Office address to be added]</em></li>
+        <li><b>Czech Republic</b><span>European Union</span><em>[Office address to be added]</em></li>
+        <li><b>Canada</b><span>North America</span><em>[Office address to be added]</em></li>
+        <li><b>Pakistan</b><span>South Asia · 24/7 operations</span><em>[Office address to be added]</em></li>
+      </ul>
+    </div>
+    <p class="terms">Prices are indicative starting points in US dollars (USD), exclusive of taxes. VAT, GST/HST or sales tax applies according to the billing country. Final pricing depends on scope, region and service level, and is confirmed in a written proposal. Third-party licences and public-cloud usage are billed at the providers' list prices. Service levels, availability targets and response times are defined per service in each client agreement.</p>
+  </section>
+</main>
+
+<script>
+const PRACTICES = [
+ {id:"p-dom",name:"Domains & Email",intro:"Your company's identity online: the names, certificates and mailboxes everything else depends on.",svcs:[
+  {tag:"Domains",name:"Domains, DNS & Certificates",desc:"Corporate domain registration and portfolio management across global and country extensions, with managed DNS and SSL lifecycle handled for you.",do:["Registration, transfers and renewals","Domain portfolio consolidation","Managed DNS and DNSSEC","SSL/TLS certificates from DV to EV"],get:[".com, .co.uk, .ca, .cz, .ae, .pk and more","No lapsed renewals","Central ownership records"],ideal:"Single-brand to multi-country businesses.",price:"from <b>$12.99</b>/domain per year"},
+  {tag:"Email",name:"Business Email",desc:"Professional email on your domain, from secure hosted mailboxes to Exchange Online and Gmail, set up and supported for you.",do:["Hosted business mailboxes","Exchange Online and Gmail setup","Migration with no lost mail","SPF, DKIM and DMARC"],get:["Spam and virus filtering","Archiving and retention","Shared mailboxes and aliases","Support for every user"],ideal:"Any company that wants reliable email on its own domain.",price:"from <b>$1.49</b>/user/mo"}
+ ]},
+ {id:"p-host",name:"Hosting",intro:"Where your websites and business applications live, managed and monitored.",svcs:[
+  {tag:"Web hosting",name:"Managed Web Hosting",desc:"Fast, secure hosting for business websites, WordPress and WooCommerce stores, fully managed so your team never touches a server.",do:["Business, WordPress and WooCommerce hosting","Managed VPS for web applications","Performance tuning, caching and CDN","Malware scanning and firewall"],get:["Daily off-site backups","Free migration","Staging environments","Uptime monitoring and SSL"],ideal:"Company websites, online stores and agencies.",price:"from <b>$49</b>/mo"},
+  {tag:"Corporate hosting",name:"Corporate Hosting & Data Centre",desc:"Dedicated infrastructure for business-critical systems in the region where your data must stay.",do:["Dedicated and bare-metal servers","Colocation with remote hands","Hosted private cloud (VMware or Proxmox)","Disaster-recovery sites"],get:["Regional hosting in five markets","Tier-3 partner facilities","Capacity planning","Fully managed option"],ideal:"ERP, databases and line-of-business systems.",price:"from <b>$179</b>/mo"}
+ ]},
+ {id:"p-cloud",name:"Cloud",intro:"Infrastructure, platforms, software and storage, on our white-label cloud or the public cloud of your choice.",svcs:[
+  {tag:"IaaS",name:"Cloud Infrastructure (IaaS)",desc:"Compute, networking and storage on demand, on our white-label cloud or on AWS, Microsoft Azure, Google Cloud and Oracle Cloud, designed and run by our engineers.",do:["Virtual data centres and cloud servers","Landing zones and network design","Migration from on-premises or other clouds","Monitoring, patching and backup"],get:["Hyperscaler usage at list price","Cost-optimisation reviews","Named cloud engineer","One invoice across clouds"],ideal:"Production workloads without an in-house cloud team.",price:"from <b>$199</b>/mo management"},
+  {tag:"PaaS",name:"Platform Services (PaaS)",desc:"Managed platforms your developers deploy on, including containers, Kubernetes, runtimes and databases, so they ship code while we run what's underneath.",do:["Managed Kubernetes and containers","App platforms with Git-based deploys","Managed MySQL, PostgreSQL, MongoDB and Redis","CI/CD pipelines"],get:["High availability","Automatic backups","Monitoring and alerts","Platform support"],ideal:"Software and digital product teams.",price:"from <b>$79</b>/mo"},
+  {tag:"SaaS",name:"Business Software (SaaS)",desc:"Licensing, setup, migration and support for Microsoft 365, Google Workspace and Zoho.",do:["Microsoft 365 and Google Workspace","Zoho Workplace","User and licence management","Migration from other suites"],get:["Licences at vendor list price","Setup and onboarding","One invoice for all seats","Ongoing user support"],ideal:"Organisations of 5 to 1,000 staff.",price:"from <b>$6</b>/user/mo"},
+  {tag:"Cloud storage",name:"Cloud Storage",desc:"Scalable storage for files, backups, archives and media, with team sharing built in.",do:["S3-compatible object storage","Team file sync and sharing","Backup targets and archive tiers","Data migration between clouds"],get:["No egress fees on our storage","Versioning and object lock","Regional data residency","Lifecycle policies"],ideal:"Growing data with retention needs.",price:"from <b>$7.99</b>/TB per month"}
+ ]},
+ {id:"p-ops",name:"Management & Support",intro:"Where we don't run the platform ourselves, we advise, migrate, manage and support it for you.",svcs:[
+  {tag:"Consultancy",name:"Consultancy & Migration",desc:"Advice and hands-on delivery to choose, cost and move to the right hosting and cloud setup.",do:["Hosting and cloud assessments","Migration planning and execution","Cost optimisation","Licensing reviews"],get:["Roadmap with costs","Risk-managed cutovers","Clear recommendations"],ideal:"Companies changing providers or moving to the cloud.",price:"assessment from <b>$799</b>"},
+  {tag:"Managed support",name:"24/7 Managed Support",desc:"Round-the-clock monitoring, maintenance and support for your hosting, servers and cloud, wherever they run.",do:["24/7 monitoring and alerting","Incident response","Patching and maintenance","Backup verification"],get:["SLA-backed response","Monthly service reports","Named service manager"],ideal:"Businesses without an in-house operations team.",price:"from <b>$129</b>/server per month"}
+ ]}
+];
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]));
+const card = s => `<article class="svc">
+  <div><span class="tag">${esc(s.tag)}</span><h4 class="name">${esc(s.name)}${s.isNew?'<span class="new">NEW</span>':""}</h4><p class="desc">${esc(s.desc)}</p><p class="ideal"><b>Ideal for:</b> ${esc(s.ideal)}</p></div>
+  <div class="cols"><div><h5>What we do</h5><ul>${s.do.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div><div><h5>What you get</h5><ul>${s.get.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div></div>
+  <div class="foot"><span class="price">${s.price}</span><span style="display:flex;gap:8px;flex-wrap:wrap">${s.link?'<a class="talk" href="https://tective.cloud" target="_blank" rel="noopener">Visit tective.cloud</a>':""}<a class="talk" href="#contact">Let's talk →</a></span></div>
+</article>`;
+document.getElementById("practiceList").innerHTML = PRACTICES.map(p => `<div class="practice" id="${p.id}"><div class="ph"><h3>${esc(p.name)}</h3><p>${esc(p.intro)}</p></div>${p.svcs.map(card).join("")}</div>`).join("");
+</script>
