@@ -10,9 +10,7 @@ $cols = Collections::all();
 <meta name="robots" content="noindex, nofollow">
 <title><?= e($title ?? 'Dashboard') ?> · b2cloud.io admin</title>
 <link rel="icon" href="<?= e(url('favicon.svg')) ?>" type="image/svg+xml">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@700;800&family=Red+Hat+Text:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="<?= e(asset('css/fonts.css')) ?>">
 <link rel="stylesheet" href="<?= e(asset('css/admin.css')) ?>">
 </head>
 <body>

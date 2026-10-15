@@ -4,13 +4,22 @@ declare(strict_types=1);
 /** Default content loaded by the installer. Everything here is editable in the dashboard. */
 final class Seed
 {
+    /** Tokens such as {legal_name} are filled from Settings. Lines whose tokens are empty are hidden. */
+    public const PRIVACY = "## Who we are\n{site_name} is operated by {legal_name}.\nRegistered address: {legal_address}.\nCompany number: {company_number}.\n\nThis policy explains how we collect and use personal data when you visit this website or contact us. Questions: {email_info}.\n\n## What we collect\n- What you send through our contact form: name, email, company, phone, the service you are interested in and your message.\n- Technical data needed to run the site securely, such as IP address, browser type and pages requested, kept in server logs.\n- For staff who sign in to our dashboard, a session cookie.\n\n## Why we use it\n- To reply to your enquiry and prepare a proposal (steps before entering a contract, or our legitimate interests).\n- To keep this website secure and prevent abuse (legitimate interests).\n- To meet legal obligations, such as tax and accounting records for clients.\n\n## Cookies\nWe use only essential cookies needed for security and forms. We do not use analytics or advertising cookies. Your browser remembers that you dismissed the cookie notice.\n\n## Who we share it with\nOnly with providers that help us run our business, such as website hosting and email delivery, under contracts that require them to protect it. We do not sell personal data.\n\n## International transfers\nOur teams work in several countries. Where personal data is transferred outside the UK or the European Economic Area, we use appropriate safeguards such as standard contractual clauses.\n\n## How long we keep it\n- Enquiries: up to 24 months after our last contact, unless you become a client.\n- Server logs: up to 90 days.\n\n## Your rights\nYou can ask to access, correct or delete your data, restrict or object to its use, or receive a copy. Email {email_info}. You can also complain to your local data protection authority.\n\n## Changes\nWe may update this policy. The current version is always published on this page.";
+
+    public const TERMS = "## About these terms\nThis website is operated by {legal_name}.\nRegistered address: {legal_address}.\nCompany number: {company_number}.\n\nBy using this website you agree to these terms.\n\n## Information on this website\nWe aim to keep information accurate and up to date, but it is provided for general information and may change without notice.\n\n## Pricing\nPrices are indicative starting points in US dollars (USD), exclusive of taxes. Final pricing, scope and service levels are confirmed in a written proposal.\n\n## Services\nServices are provided under a separate client agreement. If anything on this website conflicts with that agreement, the agreement applies.\n\n## Intellectual property\nThe content, logo and design of this website belong to us or our licensors and may not be reused without permission.\n\n## Liability\nTo the extent permitted by law, we are not liable for losses arising from use of this website. Nothing in these terms limits liability that cannot be limited by law.\n\n## Contact\nQuestions about these terms: {email_info}.";
+
+    public const SECURITY = "Security is part of every managed service we provide, not an add-on. This page summarises our practices. Detailed controls for your environment are set out in your service agreement.\n\n## Access control\n- Named engineers only, with access limited to the systems they support.\n- Multi-factor authentication on our administration tools and client environments.\n- Access is removed promptly when staff change roles or leave.\n\n## Patching and hardening\n- Operating systems and control panels are patched on a regular schedule, with urgent fixes applied sooner.\n- Servers are hardened before going live: unused services disabled, firewalls configured, secure defaults applied.\n\n## Backups and recovery\n- Backups are stored separately from the systems they protect.\n- Restores are tested so recovery works when you need it.\n- For device, server and website protection we also offer Tective, our backup and recovery platform with built-in anti-malware and anti-ransomware.\n\n## Monitoring\nManaged systems are monitored around the clock, with alerts routed to our on-call engineers.\n\n## Your data\n- Your data stays in the hosting location agreed in your proposal.\n- We access it only to provide and support your services.\n- When a service ends, we return or delete your data as agreed.\n\n## Incidents\nIf a security incident affects your services, we contact you without undue delay, explain what happened and what we are doing about it.\n\n## Reporting a vulnerability\nIf you believe you have found a security issue in our systems, please email {email_support}. We will acknowledge your report and keep you informed.";
+
+    public const SLA = "This page explains how service levels work at b2cloud.io. The exact availability targets, response times and service credits for your services are written into your client agreement.\n\n## Availability\n- Availability is measured monthly for each service, excluding scheduled maintenance.\n- Scheduled maintenance is announced in advance and planned outside your business hours where possible.\n- If we miss an availability target, you receive service credits as set out in your agreement.\n\n## Incident priorities\n- **Priority 1, critical:** a production service is down or unusable.\n- **Priority 2, high:** a production service is badly degraded or a key function is unavailable.\n- **Priority 3, normal:** a problem with a workaround, or a non-production issue.\n- **Priority 4, request:** changes, questions and planned work.\n\nResponse and resolution targets for each priority depend on your service level (Foundation, Advanced or Premium) and are listed in your agreement.\n\n## What is not covered\n- Outages caused by changes made outside our management, or by your own systems.\n- Outages of third-party platforms, such as public clouds, beyond our control. Where those providers offer credits, we pass them on.\n- Events outside reasonable control.\n\n## Reporting an incident\nEmail {email_support} with a description, the affected service and its urgency. Managed clients can also use the contact routes listed in their onboarding pack.";
+
     public static function settings(): array
     {
         return [
             'site_name' => 'b2cloud.io',
             'site_url' => 'https://b2cloud.io',
             'tagline' => 'Domains, hosting and cloud, managed by people who own the outcome',
-            'meta_description' => 'b2cloud.io is a managed services provider for domains, business email, web and corporate hosting, cloud infrastructure (IaaS), platforms (PaaS), business software (SaaS) and cloud storage, with offices in the UAE, UK, Canada, Czech Republic and Pakistan.',
+            'meta_description' => 'b2cloud.io is a managed services provider for companies that run business-critical websites, email and cloud: domains, business email, web and corporate hosting, IaaS, PaaS, SaaS and cloud storage, managed under one agreement.',
             'email_info' => 'info@b2cloud.io',
             'email_sales' => 'sales@b2cloud.io',
             'email_support' => 'support@b2cloud.io',
@@ -27,7 +36,11 @@ final class Seed
             'tective_url' => 'https://tective.cloud',
             'platforms' => "Amazon Web Services\nMicrosoft Azure\nGoogle Cloud\nOracle Cloud\nVMware & Proxmox\nKubernetes\nMicrosoft 365\nGoogle Workspace\nZoho\nLinux & Windows Server\ncPanel, DirectAdmin & Plesk",
             'pricing_note' => 'Prices are indicative starting points in US dollars (USD), exclusive of taxes. VAT, GST/HST or sales tax applies according to the billing country. Final pricing depends on scope, region and service level and is confirmed in a written proposal. Third-party licences and public-cloud usage are billed at the providers\' list prices.',
-            'footer_text' => 'Managed domains, hosting and cloud services for growing companies, from offices in five countries.',
+            'footer_text' => 'Managed domains, hosting and cloud services for companies that run business-critical systems.',
+            'legal_name' => '',
+            'legal_address' => '',
+            'company_number' => '',
+            'parent_company' => '',
         ];
     }
 
@@ -35,9 +48,12 @@ final class Seed
     public static function blocks(): array
     {
         return [
-            ['home_eyebrow', 'Home', 'Hero eyebrow', 'text', 'Managed domains · hosting · cloud'],
-            ['home_title', 'Home', 'Hero title', 'text', 'Domains, hosting and cloud, managed by people who own the outcome'],
-            ['home_intro', 'Home', 'Hero introduction', 'textarea', 'b2cloud.io designs, migrates, operates and supports the online foundations companies depend on: domains, email, web and corporate hosting, cloud infrastructure, platforms, business software and cloud storage. One accountable partner, clear service levels and engineers who know your environment.'],
+            ['home_eyebrow', 'Home', 'Hero eyebrow', 'text', 'Managed infrastructure for growing companies'],
+            ['home_title', 'Home', 'Hero title', 'text', 'Your domains, hosting and cloud, run by one accountable team'],
+            ['home_intro', 'Home', 'Hero introduction', 'textarea', 'For companies whose websites, email and cloud systems have to stay up. We design, migrate, operate and support your infrastructure under one agreement, with engineers who know your environment. Not shared hosting: a managed service with a named team behind it.'],
+            ['home_points', 'Home', 'Hero bullet points (one per line)', 'lines', "One agreement, one invoice\nEngineers who know your environment\nHosting in the region you choose"],
+            ['presence_title', 'Home', '"Where we work" title', 'text', 'Where we work'],
+            ['presence_intro', 'Home', '"Where we work" text', 'textarea', 'We serve clients across the Middle East, Europe, North America and South Asia, and choose hosting locations to meet your data-residency requirements.'],
             ['home_cta_primary', 'Home', 'Primary button text', 'text', 'Let\'s talk'],
             ['home_cta_secondary', 'Home', 'Secondary button text', 'text', 'Explore services'],
             ['home_why_title', 'Home', '"Why b2cloud.io" title', 'text', 'One partner instead of five providers'],
@@ -46,7 +62,7 @@ final class Seed
             ['home_cta_band_body', 'Home', 'Bottom call-to-action text', 'textarea', 'Tell us what you run today. We\'ll review your domains, hosting and cloud setup, show you where to reduce risk and cost, and propose a managed service that fits.'],
 
             ['about_title', 'About', 'Page title', 'text', 'Your domains, hosting and cloud, managed end to end'],
-            ['about_body', 'About', 'Main text (Markdown)', 'markdown', "Most companies run on a patchwork of providers: a domain registrar here, a hosting company there, a cloud account and email from other vendors, and a contractor in between. When something breaks, nobody owns the problem.\n\nb2cloud.io takes ownership. We operate our own platforms where that serves you best, extend our offering through trusted white-label infrastructure partners, and manage the public clouds and software you already use. Whatever runs underneath, you deal with a single team, one agreement and one invoice.\n\nFrom offices in five countries, we serve clients across the Middle East, Europe, North America and South Asia, with regional infrastructure for data residency and support across time zones."],
+            ['about_body', 'About', 'Main text (Markdown)', 'markdown', "Most companies run on a patchwork of providers: a domain registrar here, a hosting company there, a cloud account and email from other vendors, and a contractor in between. When something breaks, nobody owns the problem.\n\nb2cloud.io takes ownership. We operate our own platforms where that serves you best, extend our offering through trusted white-label infrastructure partners, and manage the public clouds and software you already use. Whatever runs underneath, you deal with a single team, one agreement and one invoice.\n\nWe serve clients across the Middle East, Europe, North America and South Asia. Hosting locations are chosen per client to meet data-residency requirements and are confirmed in each proposal."],
             ['about_pillars', 'About', 'Principles (one per line: Title | text)', 'lines', "Managed, not just hosted | We monitor, patch, back up and optimise. That's the work behind the service.\nVendor-neutral | We recommend the platform that fits: our own, a partner's, or AWS, Azure, Google Cloud or Oracle.\nAccountable | Defined service levels, named contacts and regular service reviews.\nSecure by default | Hardening, monitoring and backup are part of every managed service."],
 
             ['services_title', 'Services', 'Page title', 'text', 'Domains, hosting and cloud from one accountable team'],
@@ -59,8 +75,18 @@ final class Seed
             ['contact_intro', 'Contact', 'Introduction', 'textarea', 'Tell us what you run today and what you need. A specialist will reply within one business day.'],
             ['contact_success', 'Contact', 'Message shown after sending', 'textarea', 'Thank you. Your message has reached our team and we\'ll be in touch within one business day.'],
 
-            ['privacy_body', 'Legal', 'Privacy policy (Markdown)', 'markdown', "## Who we are\nb2cloud.io (\"we\", \"us\") provides managed domain, hosting and cloud services. This policy explains how we handle personal data on this website.\n\n## What we collect\n- Details you send through our contact form: name, email, company, phone and your message.\n- Basic technical data needed to run the site securely, such as IP address and browser type.\n\n## How we use it\nWe use your details only to respond to your enquiry and to provide our services. We do not sell personal data.\n\n## Cookies\nThis website uses only essential cookies needed for security and forms. We do not use advertising cookies.\n\n## Your rights\nYou can ask us to access, correct or delete your data at any time by emailing info@b2cloud.io.\n\n*[Placeholder policy. Please have it reviewed for each country where you operate before launch.]*"],
-            ['terms_body', 'Legal', 'Terms of use (Markdown)', 'markdown', "## Website terms\nThis website is provided by b2cloud.io for general information about our services.\n\n## Pricing\nPrices shown are indicative starting points in US dollars, exclusive of taxes. Final pricing is confirmed in a written proposal.\n\n## Services\nServices are provided under a separate client agreement, which takes precedence over anything on this website.\n\n## Contact\nQuestions about these terms: info@b2cloud.io\n\n*[Placeholder terms. Please have them reviewed before launch.]*"],
+            ['privacy_body', 'Legal', 'Privacy policy (Markdown)', 'markdown', self::PRIVACY],
+            ['terms_body', 'Legal', 'Terms of use (Markdown)', 'markdown', self::TERMS],
+            ['security_title', 'Security', 'Page title', 'text', 'How we protect your systems and data'],
+            ['security_body', 'Security', 'Page text (Markdown)', 'markdown', self::SECURITY],
+            ['sla_title', 'Service levels', 'Page title', 'text', 'Service level framework'],
+            ['sla_body', 'Service levels', 'Page text (Markdown)', 'markdown', self::SLA],
+            ['meta_about', 'SEO', 'About page description', 'textarea', 'About b2cloud.io: a managed services provider for domains, hosting and cloud, serving companies across the Middle East, Europe, North America and South Asia.'],
+            ['meta_faq', 'SEO', 'FAQ page description', 'textarea', 'Answers about b2cloud.io managed hosting and cloud services: cloud accounts, data residency, onboarding, billing and migrations.'],
+            ['meta_privacy', 'SEO', 'Privacy page description', 'textarea', 'How b2cloud.io collects, uses and protects personal data, and how to exercise your rights.'],
+            ['meta_terms', 'SEO', 'Terms page description', 'textarea', 'Terms of use for the b2cloud.io website, including how pricing and service agreements apply.'],
+            ['meta_security', 'SEO', 'Security page description', 'textarea', 'How b2cloud.io secures client systems and data: access control, patching, backups, monitoring and incident response.'],
+            ['meta_sla', 'SEO', 'Service levels page description', 'textarea', 'How b2cloud.io defines availability, incident priorities, response targets and service credits in client agreements.'],
         ];
     }
 
@@ -83,8 +109,8 @@ final class Seed
                 ['business-email', 'Email', 'Business Email', 'Secure, professional email on your own domain.', 'Professional email on your domain, from secure hosted mailboxes to Exchange Online and Gmail, set up and supported for you.', "Hosted business mailboxes\nExchange Online and Gmail setup\nMigration with no lost mail\nSPF, DKIM and DMARC", "Spam and virus filtering\nArchiving and retention\nShared mailboxes and aliases\nSupport for every user", 'Any company that wants reliable email on its own domain.', '$1.49', '/user/mo'],
             ],
             'host' => [
-                ['web-hosting', 'Web hosting', 'Managed Web Hosting', 'Fast, secure, fully managed hosting for business websites and stores.', 'Fast, secure hosting for business websites, WordPress and WooCommerce stores, fully managed so your team never touches a server.', "Business, WordPress and WooCommerce hosting\nManaged VPS for web applications\nPerformance tuning, caching and CDN\nMalware scanning and firewall", "Daily off-site backups\nFree migration\nStaging environments\nUptime monitoring and SSL", 'Company websites, online stores and agencies.', '$49', '/mo'],
-                ['corporate-hosting', 'Corporate hosting', 'Corporate Hosting & Data Centre', 'Dedicated infrastructure in the region where your data must stay.', 'Dedicated infrastructure for business-critical systems in the region where your data must stay.', "Dedicated and bare-metal servers\nColocation with remote hands\nHosted private cloud (VMware or Proxmox)\nDisaster-recovery sites", "Regional hosting in five markets\nTier-3 partner facilities\nCapacity planning\nFully managed option", 'ERP, databases and line-of-business systems.', '$179', '/mo'],
+                ['web-hosting', 'Web hosting', 'Managed Web Hosting', 'Managed hosting for corporate websites and online stores.', 'Fast, secure hosting for business websites, WordPress and WooCommerce stores, fully managed so your team never touches a server.', "Business, WordPress and WooCommerce hosting\nManaged VPS for web applications\nPerformance tuning, caching and CDN\nMalware scanning and firewall", "Daily off-site backups\nFree migration\nStaging environments\nUptime monitoring and SSL", 'Corporate websites and online stores that need to stay fast and secure.', '$49', '/mo'],
+                ['corporate-hosting', 'Corporate hosting', 'Corporate Hosting & Data Centre', 'Dedicated infrastructure in the region where your data must stay.', 'Dedicated infrastructure for business-critical systems in the region where your data must stay.', "Dedicated and bare-metal servers\nColocation with remote hands\nHosted private cloud (VMware or Proxmox)\nDisaster-recovery sites", "Hosting in the region you choose\nPartner data centre named in your proposal\nCapacity planning\nFully managed option", 'ERP, databases and line-of-business systems.', '$179', '/mo'],
             ],
             'cloud' => [
                 ['cloud-infrastructure', 'IaaS', 'Cloud Infrastructure (IaaS)', 'Compute, network and storage on our cloud or AWS, Azure, Google and Oracle.', 'Compute, networking and storage on demand, on our white-label cloud or on AWS, Microsoft Azure, Google Cloud and Oracle Cloud, designed and run by our engineers.', "Virtual data centres and cloud servers\nLanding zones and network design\nMigration from on-premises or other clouds\nMonitoring, patching and backup", "Hyperscaler usage at list price\nCost-optimisation reviews\nNamed cloud engineer\nOne invoice across clouds", 'Production workloads without an in-house cloud team.', '$199', '/mo management'],
@@ -112,9 +138,9 @@ final class Seed
     public static function commitments(): array
     {
         return [
-            ['24/7/365 monitoring', 'Every managed system is watched around the clock from our operations centre.'],
-            ['Fast response', 'Critical incidents get a response within 15 minutes on Premium and 30 minutes on Advanced, around the clock.'],
-            ['Up to 99.99% availability', 'Infrastructure availability targets backed by service credits, defined per service in your agreement.'],
+            ['24/7 monitoring', 'Managed systems are monitored around the clock, with alerts routed to our on-call engineers.'],
+            ['Agreed response times', 'Response targets for each incident priority are written into your agreement, with faster targets on higher service levels.'],
+            ['Availability in writing', 'Each service has an availability target and service-credit terms in your agreement. See our service level framework.'],
             ['Documented environments', 'Runbooks, diagrams and credentials kept current and handed back to you on request.'],
             ['Transparent cost', 'Public cloud and software at provider list price, with monthly reports and savings recommendations.'],
             ['No lock-in', 'Your data and documentation stay yours, with an exit plan agreed at the start.'],
@@ -135,11 +161,11 @@ final class Seed
     public static function offices(): array
     {
         return [
-            ['United Arab Emirates', 'Middle East & Africa', 'Regional hosting and enterprise accounts.'],
-            ['United Kingdom', 'UK & Ireland', 'UK-hosted services and GDPR-aligned operations.'],
-            ['Czech Republic', 'European Union', 'EU data residency and EU-wide support.'],
-            ['Canada', 'North America', 'Canadian-hosted services for privacy-sensitive clients.'],
-            ['Pakistan', 'South Asia · 24/7 operations', 'South Asia, plus our 24/7 engineering and operations centre.'],
+            ['United Arab Emirates', 'Middle East & Africa', 'Clients in the Middle East and Africa.'],
+            ['United Kingdom', 'UK & Ireland', 'Clients in the United Kingdom and Ireland.'],
+            ['Czech Republic', 'European Union', 'Clients across the European Union.'],
+            ['Canada', 'North America', 'Clients in North America.'],
+            ['Pakistan', 'South Asia', 'Clients in South Asia, and home to our engineering team.'],
         ];
     }
 
@@ -147,7 +173,7 @@ final class Seed
     {
         return [
             ['Do we have to move our cloud accounts to you?', 'No. We can manage your existing AWS, Azure, Google Cloud or Oracle accounts, or provide them on our consolidated billing. You choose.'],
-            ['Can our data stay in our country?', 'Yes. We offer hosting in the UAE, UK, EU, Canada and Pakistan, and design services around your residency requirements.'],
+            ['Can our data stay in our country?', 'In most cases, yes. We design services around your data-residency requirements and confirm the hosting location and data centre in your proposal.'],
             ['What if we already have an IT team?', 'Choose Foundation or a co-managed arrangement. We cover out-of-hours monitoring, specialist skills or specific platforms, and your team keeps control.'],
             ['How long does onboarding take?', 'Most single-service engagements start within a few weeks. Larger migrations follow a plan agreed during the assessment.'],
             ['How are we billed?', 'One monthly or annual invoice in USD covering services, licences and cloud usage. You can pay by card, bank transfer, direct debit or invoice terms. Taxes apply according to your billing country.'],
@@ -165,8 +191,9 @@ final class Seed
             Db::exec('INSERT IGNORE INTO blocks (k, page, label, type, v, sort) VALUES (?,?,?,?,?,?)', [$k, $page, $label, $type, $v, $i]);
         }
         if ((int)Db::value('SELECT COUNT(*) FROM practices') > 0) {
-            return; // content already present
+            return; // content already present (e.g. imported); Migrate brings it up to date
         }
+        Db::exec('INSERT INTO settings (k, v) VALUES (?, ?) ON DUPLICATE KEY UPDATE v = VALUES(v)', ['schema_version', (string)Migrate::VERSION]);
         $pids = [];
         foreach (self::practices() as $i => [$slug, $name, $summary, $intro]) {
             $pids[$slug] = Db::insert('practices', ['slug' => $slug, 'name' => $name, 'summary' => $summary, 'intro' => $intro, 'sort' => ($i + 1) * 10]);

@@ -65,6 +65,12 @@ function site_dispatch(string $path): void
         case $path === 'services':
             render('site', 'site/services', $common + ['title' => 'Services', 'description' => block('services_intro')]);
 
+        case $path === 'security':
+            render('site', 'site/legal', $common + ['title' => block('security_title', 'Security'), 'description' => block('meta_security'), 'eyebrow' => 'Security', 'body' => block('security_body')]);
+
+        case $path === 'sla':
+            render('site', 'site/legal', $common + ['title' => block('sla_title', 'Service level framework'), 'description' => block('meta_sla'), 'eyebrow' => 'Service levels', 'body' => block('sla_body')]);
+
         case (bool)preg_match('#^services/([a-z0-9-]+)$#', $path, $m):
             $svc = Db::one('SELECT s.*, p.name AS practice_name, p.slug AS practice_slug FROM services s LEFT JOIN practices p ON p.id = s.practice_id WHERE s.slug = ? AND s.is_active = 1', [$m[1]]);
             if (!$svc) {
@@ -85,11 +91,12 @@ function site_dispatch(string $path): void
         case $path === 'about':
             render('site', 'site/about', $common + [
                 'title' => 'About us',
+                'description' => block('meta_about'),
                 'offices' => Db::all('SELECT * FROM offices ORDER BY sort, id'),
             ]);
 
         case $path === 'faq':
-            render('site', 'site/faq', $common + ['title' => 'Frequently asked questions', 'faqs' => Db::all('SELECT * FROM faqs WHERE is_active = 1 ORDER BY sort, id')]);
+            render('site', 'site/faq', $common + ['title' => 'Frequently asked questions', 'description' => block('meta_faq'), 'faqs' => Db::all('SELECT * FROM faqs WHERE is_active = 1 ORDER BY sort, id')]);
 
         case $path === 'contact':
             contact_page($common);
@@ -98,10 +105,10 @@ function site_dispatch(string $path): void
             search_page($common);
 
         case $path === 'privacy':
-            render('site', 'site/legal', $common + ['title' => 'Privacy policy', 'body' => block('privacy_body')]);
+            render('site', 'site/legal', $common + ['title' => 'Privacy policy', 'description' => block('meta_privacy'), 'body' => block('privacy_body')]);
 
         case $path === 'terms':
-            render('site', 'site/legal', $common + ['title' => 'Terms of use', 'body' => block('terms_body')]);
+            render('site', 'site/legal', $common + ['title' => 'Terms of use', 'description' => block('meta_terms'), 'body' => block('terms_body')]);
 
         case $path === 'sitemap.xml':
             sitemap();
@@ -182,7 +189,7 @@ function search_page(array $common): never
         foreach (Db::all('SELECT name, audience FROM levels WHERE name LIKE ? OR audience LIKE ? OR items LIKE ?', [$like, $like, $like]) as $l) {
             $results[] = ['type' => 'Managed services', 'title' => $l['name'] . ' service level', 'text' => (string)$l['audience'], 'url' => url('managed-services')];
         }
-        $pages = ['about' => ['About us', block('about_body')], 'contact' => ['Contact us', block('contact_intro')], 'managed-services' => ['Managed services', block('managed_intro')]];
+        $pages = ['about' => ['About us', block('about_body')], 'contact' => ['Contact us', block('contact_intro')], 'managed-services' => ['Managed services', block('managed_intro')], 'security' => [block('security_title', 'Security'), fill_tokens(block('security_body'))], 'sla' => [block('sla_title', 'Service levels'), fill_tokens(block('sla_body'))]];
         foreach ($pages as $slug => [$t, $body]) {
             if (mb_stripos($t . ' ' . $body, $q) !== false) {
                 $results[] = ['type' => 'Page', 'title' => $t, 'text' => mb_substr(strip_tags(md($body)), 0, 180), 'url' => url($slug)];
@@ -192,13 +199,13 @@ function search_page(array $common): never
             $results[] = ['type' => 'Office', 'title' => $o['country'], 'text' => (string)$o['region'], 'url' => url('about#offices')];
         }
     }
-    render('site', 'site/search', $common + ['title' => $q ? 'Search: ' . $q : 'Search', 'q' => $q, 'results' => $results]);
+    render('site', 'site/search', $common + ['title' => $q ? 'Search: ' . $q : 'Search', 'q' => $q, 'results' => $results, 'noindex' => true]);
 }
 
 function sitemap(): never
 {
     header('Content-Type: application/xml; charset=utf-8');
-    $paths = ['', 'services', 'managed-services', 'about', 'faq', 'contact', 'privacy', 'terms'];
+    $paths = ['', 'services', 'managed-services', 'about', 'faq', 'contact', 'security', 'sla', 'privacy', 'terms'];
     foreach (Db::all('SELECT slug FROM services WHERE is_active = 1') as $s) {
         $paths[] = 'services/' . $s['slug'];
     }

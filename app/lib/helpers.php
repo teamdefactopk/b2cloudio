@@ -230,6 +230,41 @@ function md(?string $text): string
     return implode("\n", $out);
 }
 
+/**
+ * Fill {tokens} in editable legal/page text from Settings.
+ * A line whose token has no value is removed, so unfinished details never show as placeholders.
+ */
+function fill_tokens(string $text): string
+{
+    $vals = [
+        'site_name' => setting('site_name', 'b2cloud.io'),
+        'legal_name' => setting('legal_name') ?: setting('site_name', 'b2cloud.io'),
+        'legal_address' => setting('legal_address'),
+        'company_number' => setting('company_number'),
+        'email_info' => setting('email_info'),
+        'email_sales' => setting('email_sales'),
+        'email_support' => setting('email_support'),
+    ];
+    $out = [];
+    foreach (preg_split('/\r\n|\r|\n/', $text) ?: [] as $line) {
+        $skip = false;
+        $line = preg_replace_callback('/\{([a-z_]+)\}/', function ($m) use ($vals, &$skip) {
+            if (!array_key_exists($m[1], $vals)) {
+                return $m[0];
+            }
+            $v = trim(str_replace(["\r", "\n"], ', ', (string)$vals[$m[1]]));
+            if ($v === '') {
+                $skip = true;
+            }
+            return $v;
+        }, $line) ?? $line;
+        if (!$skip) {
+            $out[] = $line;
+        }
+    }
+    return implode("\n", $out);
+}
+
 /* ---------- views ---------- */
 
 function view(string $name, array $data = []): string

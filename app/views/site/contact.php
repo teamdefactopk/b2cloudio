@@ -65,10 +65,10 @@
         </dl>
       </div>
       <div class="contact-card reveal" style="--d:1">
-        <h2>Our offices</h2>
+        <h2><?= e(block('presence_title', 'Where we work')) ?></h2>
         <ul class="office-list">
           <?php foreach ($offices as $o): ?>
-          <li><b><?= e($o['country']) ?></b><span><?= e($o['region']) ?></span><span class="addr"><?= trim((string)$o['address']) !== '' ? nl2br(e($o['address'])) : '<em>Address coming soon</em>' ?></span><?php if (trim((string)$o['phone']) !== ''): ?><span class="addr"><?= e($o['phone']) ?></span><?php endif ?></li>
+          <li><b><?= e($o['country']) ?></b><span><?= e($o['region']) ?></span><?php if (trim((string)$o['address']) !== ''): ?><span class="addr"><?= nl2br(e($o['address'])) ?></span><?php endif ?><?php if (trim((string)$o['phone']) !== ''): ?><span class="addr"><?= e($o['phone']) ?></span><?php endif ?></li>
           <?php endforeach ?>
         </ul>
       </div>

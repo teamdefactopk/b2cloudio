@@ -22,6 +22,7 @@ require APP_DIR . '/lib/Db.php';
 require APP_DIR . '/lib/helpers.php';
 require APP_DIR . '/lib/Auth.php';
 require APP_DIR . '/lib/Seed.php';
+require APP_DIR . '/lib/Migrate.php';
 require APP_DIR . '/lib/Collections.php';
 require APP_DIR . '/lib/Mailer.php';
 require APP_DIR . '/views/partials/icons.php';
@@ -30,6 +31,12 @@ header('X-Content-Type-Options: nosniff');
 header('X-Frame-Options: SAMEORIGIN');
 header('Referrer-Policy: strict-origin-when-cross-origin');
 header('Permissions-Policy: camera=(), microphone=(), geolocation=()');
+
+define('CSP_NONCE', base64_encode(random_bytes(16)));
+header("Content-Security-Policy: default-src 'self'; script-src 'self' 'nonce-" . CSP_NONCE . "'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; form-action 'self'; frame-ancestors 'self'; base-uri 'self'; object-src 'none'");
+if ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || (($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https')) {
+    header('Strict-Transport-Security: max-age=31536000');
+}
 
 set_exception_handler(function (Throwable $ex) use ($debug) {
     error_log((string)$ex);
@@ -43,4 +50,5 @@ set_exception_handler(function (Throwable $ex) use ($debug) {
 
 if (APP_INSTALLED) {
     Db::init(APP_CONFIG['db']);
+    Migrate::run();
 }

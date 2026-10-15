@@ -8,7 +8,7 @@
 </section>
 <section class="section section-tint" id="offices">
   <div class="wrap">
-    <div class="section-head reveal"><p class="eyebrow">Global presence</p><h2>Offices in five countries</h2></div>
+    <div class="section-head reveal"><p class="eyebrow">Global presence</p><h2><?= e(block('presence_title', 'Where we work')) ?></h2><p class="section-lead"><?= e(block('presence_intro')) ?></p></div>
     <?= view('partials/offices', ['offices' => $offices, 'full' => true]) ?>
   </div>
 </section>

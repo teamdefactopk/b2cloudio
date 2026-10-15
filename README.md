@@ -2,7 +2,7 @@
 
 Corporate website for **b2cloud.io** with a built-in content dashboard. Plain PHP 8.1+ and MySQL, with no frameworks or Composer packages, so it runs on any cPanel hosting.
 
-- **Public site:** home, services (one page per service), managed services, about, FAQ, contact form, site search, privacy, terms, 404, `sitemap.xml`, `robots.txt`
+- **Public site:** home, services (one page per service), managed services, about, FAQ, security, service level framework, contact form, site search, privacy, terms, 404, `sitemap.xml`, `robots.txt`
 - **Dashboard (`/admin`):** messages inbox (with CSV export and email alerts), page text, services and prices, practices, service levels, commitments, process steps, FAQs, offices and addresses, settings (emails, social links, client-login button, announcement bar, animations), users and roles, activity log
 - **Placeholders:** the *Client login* button and social icons show as disabled ("coming soon") until you add their links in **Settings**
 - **Logo:** `public/assets/img/logo-dark.svg`, `logo-light.svg`, `logo-mark.svg`, `public/favicon.svg`
@@ -38,6 +38,9 @@ tools/      local development helper (not deployed)
 
 The installer writes `b2cloud_app/config.php` (database credentials, permissions 600) and `storage/installed.lock`. To reinstall, delete both.
 
+## Updating an existing installation
+Upload the new files over the old ones (keep `b2cloud_app/config.php` and `b2cloud_app/storage`). On the first page view the site updates its database automatically: new pages, settings and default text are added, and default text you have never edited is refreshed. Text you changed in the dashboard is left alone.
+
 ## Everyday editing
 | Want to change… | Go to |
 |---|---|
@@ -45,6 +48,8 @@ The installer writes `b2cloud_app/config.php` (database credentials, permissions
 | A service, its price or its list items | **Services** |
 | Office addresses and phone numbers | **Offices** |
 | Emails, social links, client-login link, announcement | **Settings** (administrators) |
+| Registered company name, address, number, parent company | **Settings → Company & legal** (fills the privacy policy, terms and footer) |
+| Security and service-level pages, page descriptions for Google | **Page text → Security / Service levels / SEO** |
 | Read and answer enquiries | **Messages** |
 
 Leave a price amount empty to show **"Let's talk"**.
@@ -54,6 +59,7 @@ Leave a price amount empty to show **"Let's talk"**.
 - CSRF tokens on every form; login is limited to 5 failed attempts per 15 minutes per IP
 - All database access uses prepared statements; all output is escaped
 - Contact form has a honeypot, a minimum fill time and a per-IP hourly limit; email headers are sanitised
+- Content Security Policy with per-request nonces, HSTS on HTTPS, fonts served from the site itself (no Google Fonts requests)
 - `app/` is outside the web root (or blocked by `.htaccess`); the dashboard sends `noindex` and `no-store` headers
 
 ## Local development

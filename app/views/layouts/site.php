@@ -16,6 +16,7 @@ $socials = ['linkedin' => 'LinkedIn', 'x' => 'X', 'facebook' => 'Facebook', 'ins
 <title><?= e($pageTitle) ?></title>
 <meta name="description" content="<?= e(mb_substr($desc, 0, 300)) ?>">
 <link rel="canonical" href="<?= e($canonical) ?>">
+<?php if (!empty($noindex)): ?><meta name="robots" content="noindex, follow"><?php endif ?>
 <meta name="theme-color" content="#0d2440">
 <link rel="icon" href="<?= e(url('favicon.svg')) ?>" type="image/svg+xml">
 <meta property="og:type" content="website">
@@ -24,20 +25,20 @@ $socials = ['linkedin' => 'LinkedIn', 'x' => 'X', 'facebook' => 'Facebook', 'ins
 <meta property="og:description" content="<?= e(mb_substr($desc, 0, 300)) ?>">
 <meta property="og:url" content="<?= e($canonical) ?>">
 <meta name="twitter:card" content="summary">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@500;700;800;900&family=Red+Hat+Text:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="<?= e(asset('css/fonts.css')) ?>">
 <link rel="stylesheet" href="<?= e(asset('css/site.css')) ?>">
-<script type="application/ld+json"><?= json_encode([
+<script type="application/ld+json" nonce="<?= e(CSP_NONCE) ?>"><?= json_encode(array_filter([
     '@context' => 'https://schema.org', '@type' => 'Organization', 'name' => $siteName,
     'url' => setting('site_url', 'https://b2cloud.io'), 'logo' => full_url('assets/img/logo-mark.svg'),
     'email' => setting('email_info'),
+    'legalName' => setting('legal_name') ?: null,
+    'address' => setting('legal_address') !== '' ? ['@type' => 'PostalAddress', 'streetAddress' => preg_replace('/\s*\R\s*/', ', ', setting('legal_address'))] : null,
     'contactPoint' => [
         ['@type' => 'ContactPoint', 'contactType' => 'sales', 'email' => setting('email_sales')],
         ['@type' => 'ContactPoint', 'contactType' => 'customer support', 'email' => setting('email_support')],
     ],
-], JSON_UNESCAPED_SLASHES | JSON_HEX_TAG) ?></script>
-<script>document.documentElement.classList.add('js')</script>
+], fn($v) => $v !== null), JSON_UNESCAPED_SLASHES | JSON_HEX_TAG) ?></script>
+<script nonce="<?= e(CSP_NONCE) ?>">document.documentElement.classList.add('js')</script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -125,8 +126,10 @@ $socials = ['linkedin' => 'LinkedIn', 'x' => 'X', 'facebook' => 'Facebook', 'ins
       <a href="<?= e(url('about')) ?>">About us</a>
       <a href="<?= e(url('managed-services')) ?>">Managed services</a>
       <a href="<?= e(url('faq')) ?>">FAQ</a>
+      <a href="<?= e(url('security')) ?>">Security</a>
+      <a href="<?= e(url('sla')) ?>">Service levels</a>
       <a href="<?= e(url('contact')) ?>">Contact</a>
-      <a href="<?= e(setting('tective_url', 'https://tective.cloud')) ?>" target="_blank" rel="noopener">Tective <?= icon('external', 'ico ico-xs') ?></a>
+      <a href="<?= e(setting('tective_url', 'https://tective.cloud')) ?>" target="_blank" rel="noopener" title="Tective is our backup and data protection platform">Tective: our backup platform <?= icon('external', 'ico ico-xs') ?></a>
     </div>
     <div class="footer-col">
       <h3>Get in touch</h3>
@@ -136,7 +139,7 @@ $socials = ['linkedin' => 'LinkedIn', 'x' => 'X', 'facebook' => 'Facebook', 'ins
     </div>
   </div>
   <div class="wrap footer-bottom">
-    <span>© <?= date('Y') ?> <?= e($siteName) ?>. All rights reserved.</span>
+    <span>© <?= date('Y') ?> <?= e(setting('legal_name') ?: $siteName) ?>. All rights reserved.<?php if (setting('parent_company') !== ''): ?> <?= e($siteName) ?> is part of <?= e(setting('parent_company')) ?>.<?php endif ?></span>
     <nav aria-label="Legal"><a href="<?= e(url('privacy')) ?>">Privacy</a><a href="<?= e(url('terms')) ?>">Terms</a><a href="<?= e(url('sitemap.xml')) ?>">Sitemap</a></nav>
   </div>
 </footer>

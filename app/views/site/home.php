@@ -15,9 +15,7 @@ $allServices = array_merge(...array_map(fn($p) => $p['services'], $nav ?: [['ser
         <a class="btn btn-ghost-light" href="<?= e(url('services')) ?>"><?= e(block('home_cta_secondary', 'Explore services')) ?></a>
       </div>
       <ul class="hero-points rise d4">
-        <li><?= icon('check') ?>One partner, one invoice</li>
-        <li><?= icon('check') ?>24/7 monitoring &amp; support</li>
-        <li><?= icon('check') ?>Hosting in 5 regions</li>
+        <?php foreach (lines(block('home_points')) as $pt): ?><li><?= icon('check') ?><?= e($pt) ?></li><?php endforeach ?>
       </ul>
     </div>
 
@@ -134,10 +132,10 @@ $allServices = array_merge(...array_map(fn($p) => $p['services'], $nav ?: [['ser
 
 <section class="section">
   <div class="wrap">
-    <div class="section-head reveal"><p class="eyebrow">Global presence</p><h2>Local teams, regional infrastructure</h2><p class="section-lead">Hosting regions in each market for data residency and low latency, with support across time zones.</p></div>
+    <div class="section-head reveal"><p class="eyebrow">Global presence</p><h2><?= e(block('presence_title', 'Where we work')) ?></h2><p class="section-lead"><?= e(block('presence_intro')) ?></p></div>
     <?= view('partials/offices', ['offices' => $offices]) ?>
     <div class="tective reveal">
-      <div><p class="eyebrow">Backup &amp; data protection</p><h3>Protect your hosting and cloud data with Tective</h3><p>Secure sync, backup and recovery with built-in anti-malware and anti-ransomware.</p></div>
+      <div><p class="eyebrow">Backup &amp; data protection</p><h3>Protect your hosting and cloud data with Tective</h3><p>Tective is our own backup and recovery platform: secure sync, backup and restore with built-in anti-malware and anti-ransomware. It has its own website.</p></div>
       <a class="btn btn-ghost" href="<?= e(setting('tective_url', 'https://tective.cloud')) ?>" target="_blank" rel="noopener">Visit tective.cloud <?= icon('external') ?></a>
     </div>
   </div>

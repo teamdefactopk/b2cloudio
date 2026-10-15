@@ -16,6 +16,12 @@ function settings_schema(): array
             ['platforms', 'Platforms we manage', 'lines', 'One per line. Shown in the scrolling strip on the homepage.'],
             ['animations', 'Enable animations', 'checkbox', 'Turn off to show the site without motion.'],
         ],
+        'Company & legal' => [
+            ['legal_name', 'Registered company name', 'text', 'Shown in the privacy policy, terms and footer. Lines that need a value you have not filled in are hidden.'],
+            ['legal_address', 'Registered address', 'textarea', ''],
+            ['company_number', 'Company registration number', 'text', ''],
+            ['parent_company', 'Parent company', 'text', 'Optional. Adds "b2cloud.io is part of …" to the footer.'],
+        ],
         'Contact & notifications' => [
             ['email_info', 'General email', 'email', ''],
             ['email_sales', 'Sales email', 'email', ''],

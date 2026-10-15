@@ -8,4 +8,5 @@
     </div>
   </div>
 </section>
+<script type="application/ld+json" nonce="<?= e(CSP_NONCE) ?>"><?= json_encode(['@context' => 'https://schema.org', '@type' => 'FAQPage', 'mainEntity' => array_map(fn($f) => ['@type' => 'Question', 'name' => $f['question'], 'acceptedAnswer' => ['@type' => 'Answer', 'text' => strip_tags(md($f['answer']))]], $faqs)], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) ?></script>
 <?= view('partials/cta-band') ?>
