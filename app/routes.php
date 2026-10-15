@@ -13,11 +13,14 @@ function current_path(): string
 
 function dispatch(): void
 {
-    $path = current_path();
+    $path = defined('B2C_FORCE_ROUTE') ? B2C_FORCE_ROUTE : current_path();
+    if ($path === 'install.php') {
+        $path = 'install';
+    }
 
     if (!APP_INSTALLED) {
         if ($path !== 'install') {
-            redirect('/install');
+            redirect('/install.php');
         }
         require APP_DIR . '/install.php';
         run_installer();

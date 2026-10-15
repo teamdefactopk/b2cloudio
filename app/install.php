@@ -5,6 +5,16 @@ declare(strict_types=1);
 function run_installer(): never
 {
     $errors = [];
+    $warnings = [];
+    if (!is_file(PUBLIC_DIR . '/.htaccess')) {
+        $warnings[] = 'The hidden .htaccess file is missing from ' . PUBLIC_DIR . '. Upload it (in File Manager: Settings → Show Hidden Files) or every page except the homepage will show "Not Found".';
+    }
+    if (version_compare(PHP_VERSION, '8.1.0', '<')) {
+        $warnings[] = 'PHP ' . PHP_VERSION . ' is too old. Choose PHP 8.1 or newer in cPanel → MultiPHP Manager.';
+    }
+    if (!extension_loaded('pdo_mysql')) {
+        $warnings[] = 'The pdo_mysql PHP extension is not enabled. Turn it on in cPanel → Select PHP Version → Extensions.';
+    }
     $scriptDir = rtrim(str_replace('\\', '/', dirname((string)($_SERVER['SCRIPT_NAME'] ?? '/'))), '/');
     $scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
     $old = [
@@ -84,10 +94,11 @@ h1{margin:0 0 6px;font-size:1.6rem}p{color:#566278}fieldset{border:1px solid #d9
 legend{font-weight:700;padding:0 6px}label{display:block;font-size:.9rem;font-weight:600;margin:10px 0 4px}
 input{width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid #c7cfdc;border-radius:8px;font:inherit}
 .row{display:grid;grid-template-columns:2fr 1fr;gap:12px}button{background:#0b5fae;color:#fff;border:0;border-radius:8px;padding:12px 20px;font:inherit;font-weight:700;cursor:pointer;margin-top:10px}
-.err{background:#fde8e8;color:#8a1c1c;border-radius:8px;padding:10px 14px;margin:12px 0}.err li{margin:2px 0}small{color:#566278}
+.warn{background:#fff4dc;color:#7a4b00;border-radius:8px;padding:10px 14px;margin:12px 0}.err{background:#fde8e8;color:#8a1c1c;border-radius:8px;padding:10px 14px;margin:12px 0}.err li{margin:2px 0}small{color:#566278}
 </style></head><body><div class="box">
 <h1>Install b2cloud.io</h1>
 <p>Create a MySQL database and user in cPanel → <b>MySQL® Databases</b>, add the user to the database with <b>All Privileges</b>, then fill in the form.</p>
+<?php if ($warnings): ?><div class="warn"><b>Check before continuing:</b><ul><?php foreach ($warnings as $w): ?><li><?= e($w) ?></li><?php endforeach ?></ul></div><?php endif ?>
 <?php if ($errors): ?><div class="err"><ul><?php foreach ($errors as $er): ?><li><?= e($er) ?></li><?php endforeach ?></ul></div><?php endif ?>
 <form method="post" autocomplete="off">
 <input type="hidden" name="_csrf" value="<?= e($token) ?>">

@@ -32,7 +32,7 @@ tools/      local development helper (not deployed)
 ### Install
 1. cPanel → **MySQL® Databases**: create a database and a user, and add the user to the database with **All Privileges**.
    *Optional:* import `database/b2cloud.sql` with **phpMyAdmin → Import** to load the tables and all default content up front. The installer detects them and keeps your content; it only adds the config file and your admin account.
-2. Visit `https://your-domain/install` and enter the database details and your first administrator account.
+2. Visit `https://your-domain/install.php` and enter the database details and your first administrator account.
 3. Sign in at `https://your-domain/admin`.
 4. Turn on SSL (cPanel → SSL/TLS Status → AutoSSL), then uncomment the HTTPS redirect in `public_html/.htaccess`.
 
@@ -59,7 +59,7 @@ Leave a price amount empty to show **"Let's talk"**.
 ## Local development
 ```bash
 php -S 127.0.0.1:8080 -t public tools/dev-router.php
-# then open http://127.0.0.1:8080/install
+# then open http://127.0.0.1:8080/install.php
 ```
 
 ## Roadmap

@@ -16,6 +16,13 @@ DirectoryIndex index.php
   RewriteRule ^ index.php [L,QSA]
 </IfModule>
 
+# Fallback when mod_rewrite is not available: send unknown URLs to index.php
+<IfModule !mod_rewrite.c>
+  <IfModule mod_dir.c>
+    FallbackResource /index.php
+  </IfModule>
+</IfModule>
+
 <IfModule mod_headers.c>
   <FilesMatch "\.(css|js|svg|png|jpg|jpeg|webp|woff2)$">
     Header set Cache-Control "public, max-age=2592000"
