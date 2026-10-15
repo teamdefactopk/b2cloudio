@@ -9,6 +9,7 @@ define('PUBLIC_DIR', __DIR__);
 $candidates = [
     __DIR__ . '/../app',
     __DIR__ . '/../b2cloud_app',
+    __DIR__ . '/b2cloud_app',
     __DIR__ . '/app',
 ];
 $appDir = null;

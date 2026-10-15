@@ -9,7 +9,7 @@ DirectoryIndex index.php
   # RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
   # Never serve the app folder if it was uploaded inside the web root
-  RewriteRule ^app(/|$) - [F,L]
+  RewriteRule ^(app|b2cloud_app|database)(/|$) - [F,L]
 
   # Send everything that is not a real file to the front controller
   RewriteCond %{REQUEST_FILENAME} !-f
