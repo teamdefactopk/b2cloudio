@@ -1,0 +1,133 @@
+b2cloud.io WEBSITE: STEP-BY-STEP INSTALL ON cPANEL
+==================================================
+
+Your cPanel home folder is /home/b2cloud. At the end it must look like this:
+
+  /home/b2cloud/
+     public_html/            <- website files only
+        .htaccess
+        index.php
+        install.php
+        favicon.svg
+        assets/
+        .well-known/         (cPanel's own, leave it)
+        cgi-bin/             (cPanel's own, leave it)
+     b2cloud_app/            <- the whole app folder, NEXT TO public_html
+        bootstrap.php
+        routes.php
+        admin.php
+        install.php
+        schema.sql
+        lib/
+        views/
+        storage/
+
+
+STEP 1: SHOW HIDDEN FILES
+-------------------------
+  cPanel > File Manager > Settings (top right)
+  > tick "Show Hidden Files (dotfiles)" > Save.
+
+
+STEP 2: EMPTY public_html
+-------------------------
+  Open public_html. Select EVERYTHING except ".well-known" and "cgi-bin"
+  and click Delete (tick "Skip the trash" if offered).
+  public_html should now contain only .well-known and cgi-bin.
+
+
+STEP 3: UPLOAD AND EXTRACT THE ZIP IN YOUR HOME FOLDER
+------------------------------------------------------
+  1. Click "Home" (top left) so you are in /home/b2cloud
+     (NOT inside public_html).
+  2. Upload > choose b2cloud-website.zip > wait for 100% > Go Back.
+  3. Right-click b2cloud-website.zip > Extract > Extract Files.
+     You now have the folder /home/b2cloud/b2cloud-website
+
+
+STEP 4: MOVE THE WEBSITE FILES INTO public_html
+-----------------------------------------------
+  1. Open /home/b2cloud/b2cloud-website/public_html
+     You should see: .htaccess, index.php, install.php, favicon.svg, assets
+  2. Click "Select All" (check .htaccess is selected too).
+  3. Click "Move", type:   /public_html   and click "Move Files".
+
+
+STEP 5: MOVE THE APP FOLDER (AS A WHOLE FOLDER)
+-----------------------------------------------
+  1. Go to /home/b2cloud/b2cloud-website
+  2. Right-click the folder "b2cloud_app" itself (do not open it)
+     > Move > type:   /   > Move Files.
+     It is now at /home/b2cloud/b2cloud_app, next to public_html.
+
+
+STEP 6: SET PERMISSIONS
+-----------------------
+  1. In /home/b2cloud, right-click "b2cloud_app" > Change Permissions
+     > set 755 (Owner: Read Write Execute, Group: Read Execute,
+       World: Read Execute) > Change Permissions.
+  2. Open b2cloud_app, right-click "storage" > Change Permissions > 755.
+  Files can stay at 644.
+
+
+STEP 7: CLEAN UP
+----------------
+  In /home/b2cloud delete the folder "b2cloud-website" and the zip file.
+  Keep database/b2cloud.sql on your computer for Step 9.
+
+
+STEP 8: SET PHP VERSION
+-----------------------
+  cPanel > MultiPHP Manager > tick your domain > PHP 8.2 (or 8.3) > Apply.
+  (If you have "Select PHP Version": Extensions tab > tick pdo_mysql and
+  mbstring.)
+
+
+STEP 9: CREATE THE DATABASE (skip if already done)
+--------------------------------------------------
+  1. cPanel > MySQL(R) Databases > Create New Database: b2cloud
+  2. Add New User: b2cloud + a strong password (write it down).
+  3. Add User To Database > select both > tick ALL PRIVILEGES > Make Changes.
+  4. Optional: cPanel > phpMyAdmin > click the database > Import
+     > choose b2cloud.sql > Go.
+  Note the full names cPanel shows, e.g. b2cloud_b2cloud.
+
+
+STEP 10: RUN THE INSTALLER
+--------------------------
+  Open:   https://your-domain/install.php
+  Fill in:
+     Site address    https://your-domain
+     Host            localhost
+     Port            3306
+     Database name   (full name from Step 9, e.g. b2cloud_b2cloud)
+     Database user   (full name from Step 9)
+     Password        (from Step 9)
+     Admin name, email, password (10+ characters, twice)
+  Click "Install website". You are taken to the sign-in page.
+
+
+STEP 11: SIGN IN
+----------------
+  https://your-domain/admin
+  First: Offices (addresses), Settings (emails, notifications),
+  Page text > Legal (privacy and terms).
+
+
+STEP 12: SSL (HTTPS)
+--------------------
+  cPanel > SSL/TLS Status > Run AutoSSL. When the padlock works, edit
+  public_html/.htaccess and remove the "#" from the two lines under
+  "Uncomment to force HTTPS".
+
+
+IF SOMETHING GOES WRONG
+-----------------------
+  Blank page      b2cloud_app is in the wrong place or not writable
+                  (Steps 5 and 6), or PHP is older than 8.1 (Step 8).
+  "Not Found"     index.php or .htaccess is not directly in public_html.
+  "Forbidden"     public_html/.htaccess was replaced by the app's
+                  .htaccess. Repeat Step 4 to restore the right one.
+  "Application folder not found"   Repeat Step 5.
+  Database error  Use the full database and user names with the cPanel
+                  prefix, and check ALL PRIVILEGES (Step 9).
