@@ -12,6 +12,7 @@ Corporate website for **b2cloud.io** with a built-in content dashboard. Plain PH
 ```
 app/        PHP code, templates, schema (keep OUT of public_html)
 public/     web root: index.php, .htaccess, assets
+database/   b2cloud.sql: import file (tables + default content) for phpMyAdmin
 tools/      local development helper (not deployed)
 .cpanel.yml deployment recipe for cPanel "Git Version Control"
 ```
@@ -30,6 +31,7 @@ tools/      local development helper (not deployed)
 
 ### Install
 1. cPanel → **MySQL® Databases**: create a database and a user, and add the user to the database with **All Privileges**.
+   *Optional:* import `database/b2cloud.sql` with **phpMyAdmin → Import** to load the tables and all default content up front. The installer detects them and keeps your content; it only adds the config file and your admin account.
 2. Visit `https://your-domain/install` and enter the database details and your first administrator account.
 3. Sign in at `https://your-domain/admin`.
 4. Turn on SSL (cPanel → SSL/TLS Status → AutoSSL), then uncomment the HTTPS redirect in `public_html/.htaccess`.
